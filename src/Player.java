@@ -29,7 +29,7 @@ public class Player {
         return this.accuracy;
     }
 
-    public void setAccuracy(double accuracy) {
+    public void updateAccuracy(double accuracy) {
         this.accuracy = accuracy;
     }
 
@@ -37,24 +37,24 @@ public class Player {
         return this.totalGuesses;
     }
 
-    public void setTotalGuesses(int totalGuesses) {
-        this.totalGuesses = totalGuesses;
+    public void incrementTotalGuesses(int totalGuesses) {
+        this.totalGuesses = totalGuesses+1;
     }
 
     public int getCryptogramsPlayed() {
         return this.cryptogramsPlayed;
     }
 
-    public void setCryptogramsPlayed(int cryptogramsPlayed) {
-        this.cryptogramsPlayed = cryptogramsPlayed;
+    public void incrementCryptogramsPlayed(int cryptogramsPlayed) {
+        this.cryptogramsPlayed = cryptogramsPlayed+1;
     }
 
     public int getCryptogramsCompleted() {
         return this.cryptogramsCompleted;
     }
 
-    public void setCryptogramsCompleted(int cryptogramsCompleted) {
-        this.cryptogramsCompleted = cryptogramsCompleted;
+    public void incrementCryptogramsCompleted(int cryptogramsCompleted) {
+        this.cryptogramsCompleted = cryptogramsCompleted +1;
     }
 
 }
