@@ -5,7 +5,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class NumberCryptogram extends Cryptogram {
 
-
     public Map<String, Integer> getNumberMap() {
         Map<String, Integer> numberCrypt = new HashMap<>();
         shuffle(numbers);
@@ -16,7 +15,7 @@ public class NumberCryptogram extends Cryptogram {
         return numberCrypt;
     }
 
-
+@Override
     public String generateCipheredPhrase (String phraseToCipher) {
         String returnPhrase = "";
         phraseToCipher= phraseToCipher.toUpperCase();
@@ -25,15 +24,13 @@ public class NumberCryptogram extends Cryptogram {
 
         for (int i=0; i<phraseToCipher.length(); i++){
             if (!cipherKey.containsKey(Character.toString(phraseToCipher.charAt(i)))) {
-                returnPhrase += "   ";
+                returnPhrase += "   "; //this is a tab
             }
             else {
-                returnPhrase+= " ";
+                returnPhrase+= " ";  //this is a single space
                 returnPhrase += (cipherKey.get(Character.toString(phraseToCipher.charAt(i))));
             }
         }
         return returnPhrase;
     }
 }
-
-

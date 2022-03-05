@@ -1,14 +1,12 @@
 package src;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Cryptogram {
+public abstract class Cryptogram {
     String phrase = readCryptFromFile("phrases.txt");
+    String cipheredPhrase;
     static String[] alphabet = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
             "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
     static int[] numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
@@ -45,4 +43,6 @@ public class Cryptogram {
         }
     }
 
+
+    public abstract String generateCipheredPhrase(String phraseToCipher);
 }

@@ -1,14 +1,9 @@
 package src;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.io.*;
-import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class LetterCryptogram extends Cryptogram {
-
 
     public Map<String, String> getLetterMap() {
         Map<String, String> letterCrypt = new HashMap<>();
@@ -19,6 +14,7 @@ public class LetterCryptogram extends Cryptogram {
         return letterCrypt;
     }
 
+    @Override
     public String generateCipheredPhrase (String phraseToCipher) {
         Map<String,String> cipherKey;
         cipherKey = getLetterMap();
@@ -30,7 +26,4 @@ public class LetterCryptogram extends Cryptogram {
         }
         return returnPhrase;
     }
-
-
-
 }
