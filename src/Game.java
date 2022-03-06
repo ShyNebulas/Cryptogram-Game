@@ -324,15 +324,16 @@ public class Game {
         return inGamePhrase;
     }
 
-    public static boolean isNumeric(String str) {
-        try {
-            Integer.parseInt(str);
-            return true;
-        }
-        catch(NumberFormatException e){
-            return false;
-        }
-    }
+//    public static boolean isNumeric(String str) {
+//        try {
+//            Integer.parseInt(str);
+//            return true;
+//        }
+//        catch(NumberFormatException e){
+//            return false;
+//        }
+//    }
+
     public Boolean checkIfCryptogramSolved(String solutionPhrase,String usersAnswer) {
         return solutionPhrase.equalsIgnoreCase(usersAnswer);
     }
