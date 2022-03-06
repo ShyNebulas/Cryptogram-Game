@@ -123,19 +123,19 @@ public class Game {
             Scanner scInGame = new Scanner(System.in);
             System.out.println("Select your option:");
             System.out.println("...................\n");
-            System.out.println("1-Press 1 to Enter and replace a number with a letter");
-            System.out.println("2-Press 2 to Undo a replaced letter");
+            System.out.println("1-Press 1 to Enter a letter to replace a number");
+            System.out.println("2-Press 2 to Undo a replaced number");
             System.out.println("3-Press 3 to Quit");
 
             selection = scInGame.nextInt();
             if (selection > 0 && selection < 4) {
                 switch (selection) {
                     case 1:
-                        inGamePhrase = enterLetter(inGamePhrase);
+                        inGamePhrase = enterNumber(inGamePhrase);
                         break;
 
                     case 2:
-                       inGamePhrase = undoLetter(inGamePhrase,currentCryptogram.cipheredPhrase);
+                       inGamePhrase = undoNumber(inGamePhrase,currentCryptogram.cipheredPhrase);
                         break;
 
                     case 3:
@@ -159,11 +159,11 @@ public class Game {
             String ToReplace = firstInput.nextLine().toUpperCase();
             if (Objects.equals(ToReplace, "0")) {
                 exitCode = 1;
-            } else if (ToReplace.matches("[A-Za-z]") || ((Integer.parseInt(ToReplace) >= 1)|| (Integer.parseInt(ToReplace)) <=26)){
+            } else if (ToReplace.matches("[A-Za-z]")){
                 System.out.println("please enter your replacement:");
                 Scanner secondInput = new Scanner(System.in);
                 String replacement = secondInput.nextLine().toUpperCase();
-                if (replacement.matches("[A-Za-z]") || ((Integer.parseInt(replacement)>=1) || (Integer.parseInt(replacement)) <=26)){
+                if (replacement.matches("[A-Za-z]")){
                     inGamePhrase = inGamePhrase.replace(ToReplace, replacement);
                     currentPlayer.incrementTotalGuesses();
                     currentPlayer.updateAccuracy();
@@ -193,14 +193,83 @@ public class Game {
         Scanner undoInput = new Scanner(System.in);
         while(exitCode ==0) {
             System.out.println("Type 0 to quit OR");
-            System.out.println("Please enter the Letter/number to undo:"); //use replacement instead of to replace
-            //replace original puzzle letter rather than user entered letter
+            System.out.println("Please enter the Letter to undo:"); 
 
             String ToUndo = undoInput.nextLine().toUpperCase();
             if (Objects.equals(ToUndo, "0")) {
                 exitCode = 1;
             }
-            else if(ToUndo.matches("[A-Za-z]") || ((Integer.parseInt(ToUndo) >= 1)|| (Integer.parseInt(ToUndo)) <=26)) {
+            else if(ToUndo.matches("[A-Za-z]")) {
+                char originalLetter = cipheredPhrase.toUpperCase().charAt(inGamePhrase.indexOf(ToUndo));
+                    if (originalLetter==ToUndo.charAt(0)){
+                        System.out.println("This letter has not been mapped before");
+                    }
+                    else {
+                        inGamePhrase=inGamePhrase.replace(ToUndo.charAt(0),originalLetter);
+                        return inGamePhrase;
+                    }
+            }
+            else {
+                System.out.println("Invalid input please try again");
+            }
+        }
+        return inGamePhrase;
+    }
+    
+    
+    
+    public String enterNumber(String inGamePhrase) {
+    	int exitCode = 0;
+    	Scanner enterInput = new Scanner(System.in);
+    	while(exitCode==0) {
+    		System.out.println("Type 0 to quit OR");
+            System.out.println("Please enter the number to replace:");
+            String toReplace1 = enterInput.nextLine();
+            if (Objects.equals(toReplace1, "0")) {
+                exitCode = 1;
+            } else if (((Integer.parseInt(toReplace1) >= 1)|| (Integer.parseInt(toReplace1)) <=26)){
+                System.out.println("please enter your replacement:");
+                Scanner secondInput = new Scanner(System.in);
+                String replacement = secondInput.nextLine().toUpperCase();
+                if (replacement.matches("[A-Za-z]")){
+                    inGamePhrase = inGamePhrase.replace(toReplace1, replacement);
+                    currentPlayer.incrementTotalGuesses();
+                    currentPlayer.updateAccuracy();
+                    if (checkIfGuessCorrect(toReplace1.charAt(0),currentCryptogram.phrase,inGamePhrase)) {
+                        currentPlayer.incrementTotalCorrectGuesses();
+                        currentPlayer.updateAccuracy();
+                    }
+                    else if (checkIfCryptogramSolved(currentCryptogram.phrase,inGamePhrase)){
+                        currentPlayer.incrementCryptogramsCompleted();
+                        System.out.println("Congratulations you have finished this Cryptogram!");
+
+                    }
+                    return inGamePhrase;
+                } else {
+                    System.out.println("Invalid input, please enter one number");
+                }
+
+            } else {
+                System.out.println("Invalid input, one number at a time ");
+            }
+        }
+    	
+		return inGamePhrase;
+    	
+    }
+    
+    public String undoNumber(String inGamePhrase, String cipheredPhrase) {
+        int exitCode = 0;
+        Scanner undoInput = new Scanner(System.in);
+        while(exitCode ==0) {
+            System.out.println("Type 0 to quit OR");
+            System.out.println("Please enter the letter to undo:"); 
+
+            String ToUndo = undoInput.nextLine().toUpperCase();
+            if (Objects.equals(ToUndo, "0")) {
+                exitCode = 1;
+            }
+            else if(ToUndo.matches("[A-Za-z]")) {
                 char originalLetter = cipheredPhrase.toUpperCase().charAt(inGamePhrase.indexOf(ToUndo));
                     if (originalLetter==ToUndo.charAt(0)){
                         System.out.println("This letter/number has not been mapped before");
@@ -216,8 +285,13 @@ public class Game {
         }
         return inGamePhrase;
     }
-    //doesn't work with numbers.
-
+    
+    
+    
+    
+    
+    
+    
     public Boolean checkIfCryptogramSolved(String solutionPhrase,String usersAnswer) {
         return solutionPhrase.equalsIgnoreCase(usersAnswer);
     }
@@ -233,8 +307,6 @@ public class Game {
         }
        return bool;
     }
-    //doesn't work with numbers.
-
     public static void main(String[] args) {
 
         Game testGame = new Game();
