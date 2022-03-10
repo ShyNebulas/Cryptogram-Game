@@ -23,7 +23,7 @@ public class LetterCryptogram extends Cryptogram {
         phraseToCipher= phraseToCipher.toUpperCase();
 
         for (int i=0; i<phraseToCipher.length(); i++){
-            returnArray.add((cipherKey.getOrDefault(Character.toString(phraseToCipher.charAt(i)), ("0"))));
+            returnArray.add((cipherKey.getOrDefault(Character.toString(phraseToCipher.charAt(i)), ("-1"))));
         }
         return returnArray;
     }
@@ -36,7 +36,7 @@ public class LetterCryptogram extends Cryptogram {
                     playingArray.add("_");
                 }
                 else {
-                    playingArray.add("0");  // 0 means a split between words.
+                    playingArray.add("-1");  // -1 means a split between words.
                 }
             }
             return playingArray;

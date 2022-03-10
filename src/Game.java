@@ -2,11 +2,9 @@ package src;
 
 import java.util.*;
 import java.lang.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Game {
-    static Player currentPlayer;
+     Player currentPlayer;
     static Cryptogram currentCryptogram;
     static ArrayList<String> inGameArray;
 
@@ -19,7 +17,7 @@ public class Game {
         System.out.println("Enter your username");
         System.out.println("...................\n");
         name = scUsername.nextLine();
-        currentPlayer = new Player(name, 0, 0, 0,0, 0);
+        currentPlayer = new Player(name, 0, 0, 0, 0, 0);
         int selection;
         int exit = 0;
         while (exit == 0) {
@@ -75,17 +73,16 @@ public class Game {
         System.out.println("***************** Number Cryptogram Puzzle ********************");
         System.out.println("***************************************************************");
 
-        currentCryptogram =  new NumberCryptogram();
+        currentCryptogram = new NumberCryptogram();
         String solutionPhrase = currentCryptogram.phrase;
         currentCryptogram.cipheredArray = currentCryptogram.generateCipheredArray(solutionPhrase);
         inGameArray = currentCryptogram.getPlayingArray(currentCryptogram.cipheredArray);
         inGameMenu();
 
-
     }
 
     public void inGameMenu() {
-        int selection=-1;
+        int selection = -1;
         int exit = 0;
         while (exit == 0) {
             System.out.println("Original Puzzle: \n");
@@ -102,19 +99,18 @@ public class Game {
             System.out.println("3-Press 3 to Quit");
             try {
                 selection = scInGame.nextInt();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Invalid Input.");
             }
 
             if (selection > 0 && selection < 4) {
                 switch (selection) {
                     case 1:
-                        inGameArray= enterLetter(inGameArray);
+                        getInputForEnterLetter();
                         break;
 
                     case 2:
-                        inGameArray = undoLetter(inGameArray,currentCryptogram.cipheredArray);
+                        inGameArray = undoLetter(inGameArray, currentCryptogram.cipheredArray);
                         break;
 
                     case 3:
@@ -129,23 +125,139 @@ public class Game {
 
     }
 
-    public ArrayList<String> enterLetter( ArrayList<String> inGameArray) {
+    public void getInputForEnterLetter() {
         int exitCode = 1;
         while (exitCode == 1) {
-            System.out.println("Please enter the letter to replace or 0 to go back to previous menu");
+            System.out.println("Please enter the value to replace or 0 to go back to previous menu");
             Scanner getInput = new Scanner(System.in);
             try {
+                String toReplace = getInput.nextLine().toUpperCase();
+                if (currentCryptogram.cipheredArray.contains(toReplace)) {
+                    for (int i = 0; i < inGameArray.size(); i++) {
+                        if (Objects.equals(currentCryptogram.cipheredArray.get(i), toReplace)) {
+                            if (!Objects.equals(inGameArray.get(i), "_")) {
+                                System.out.println("This cryptogram value is mapped to something before, type 0 to overwrite or 1 to keep original");
+                                Scanner getThirdInput = new Scanner(System.in);
+                                String option = getThirdInput.nextLine();
+                                if (Objects.equals(option, "0")) {
+                                    System.out.println("Please enter the replacement letter or 0 to go back to previous menu");
+                                    Scanner getSecondInput = new Scanner(System.in);
+                                    String replacement = getSecondInput.nextLine().toUpperCase();
+                                    if (replacement.matches("[a-zA-Z]")) {
+                                        if (inGameArray.contains(replacement)) {
+                                            System.out.println("this letter is used. either undo mapping or pick a different letter");
+                                            break;
+                                        }
+                                        else {
+                                            inGameArray = enterLetter(toReplace,replacement);
+                                            currentPlayer.incrementTotalGuesses();
+                                            checkIfGuessCorrect(replacement,inGameArray,currentCryptogram.phrase);
+                                            if (checkIfCryptogramSolved(inGameArray,currentCryptogram.phrase)) {
+                                                System.out.println("You have finished this cryptogram successfully Congratulations!");
+                                                exitCode =0;
+                                                onStartMenu();
+                                                break;
+
+                                            }
+                                            else if ((!inGameArray.contains("_")) && (!checkIfCryptogramSolved(inGameArray, currentCryptogram.phrase))) {
+                                                System.out.println("Your solution is incorrect, you have unsuccessfully finished cryptogram");
+                                                exitCode=0;
+                                                onStartMenu();
+                                                break;
+                                            }
+                                            exitCode=0;
+                                            break;
+                                        }
+
+                                        // if inGameArray.contains (replacement)
+                                        // display error that this letter is used. either undo mapping or pick a different letter
+
+                                    }
+                                    else if (Objects.equals(replacement,"0")) {
+                                        exitCode=0;
+                                        break;
+                                    }
+                                    else {
+                                        System.out.println("Please enter a valid alphabet letter.");
+                                    }
+
+                                }
+                                else if (Objects.equals(option,"1")){
+                                    exitCode=0;
+                                    break;
+                                }
+                                else {
+                                    System.out.println("please pick a valid option");
+                                }
+                            }
+                            else {
+                                System.out.println("Please enter the replacement letter or 0 to go back to previous menu");
+                                Scanner getSecondInput = new Scanner(System.in);
+                                String replacement = getSecondInput.nextLine().toUpperCase();
+                                if (replacement.matches("[a-zA-Z]")) {
+                                    if (inGameArray.contains(replacement)) {
+                                        System.out.println("this letter is used. either undo mapping or pick a different letter");
+                                        exitCode =0;
+                                        break;
+                                    }
+                                    else {
+                                        inGameArray=enterLetter(toReplace, replacement);
+                                        currentPlayer.incrementTotalGuesses();
+                                        checkIfGuessCorrect(replacement,inGameArray,currentCryptogram.phrase);
+                                        if (checkIfCryptogramSolved(inGameArray,currentCryptogram.phrase)) {
+                                            System.out.println("You have finished this cryptogram successfully Congratulations!");
+                                            exitCode =0;
+                                            onStartMenu();
+                                            break;
+                                        }
+                                        else if ((!inGameArray.contains("_")) && (!checkIfCryptogramSolved(inGameArray, currentCryptogram.phrase))) {
+                                            System.out.println("Your solution is incorrect, you have unsuccessfully finished cryptogram");
+                                            exitCode=0;
+                                            onStartMenu();
+                                            break;
+                                        }
+                                        exitCode=0;
+                                        break;
+                                    }
+                                }
+                                else {
+                                    System.out.println("Please enter a valid letter from the alphabet A to Z");
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (Objects.equals(toReplace,"0")) {
+                    exitCode=0;
+                    break;
+                }
+                else {
+                    System.out.println("The puzzle does not have this value");
+                }
             }
             catch (Exception e) {
-                System.out.println("Please enter a valid input");
+                System.out.println("Invalid Input");
             }
-
         }
-        return null;
-
     }
 
-    public ArrayList<String> undoLetter( ArrayList<String> inGameArray,ArrayList<String> cipheredArray) {
+    public ArrayList<String> enterLetter(String toReplace, String replacement){
+        currentPlayer.incrementTotalGuesses();
+        for (int i = 0; i < inGameArray.size(); i++) {
+            if (Objects.equals(currentCryptogram.cipheredArray.get(i), toReplace.toUpperCase())) {
+                inGameArray.set(i, replacement.toUpperCase());
+            }
+        }
+        checkIfGuessCorrect(replacement, inGameArray, currentCryptogram.phrase);
+        return inGameArray;
+    }
+
+
+    // if (!inGameArray.contains("_"))
+    // checkifCryptSolved
+    // if this is false, then display "unsuccessfully solved cryptogram"
+
+    public ArrayList<String> undoLetter(ArrayList<String> inGameArray,ArrayList<String> cipheredArray) {
         int exitCode = 1;
         while (exitCode == 1) {
             System.out.println("Please enter the letter to undo or 0 to go back to previous menu");
@@ -159,12 +271,11 @@ public class Game {
 
         }
         return null;
-
     }
 
     public void printCipheredArray(ArrayList<String> cipheredArray) {
         for( String each : cipheredArray) {
-            if(Objects.equals(each,"0")){
+            if(Objects.equals(each,"-1")){
                 System.out.print("  ");
             }
             else if (each.matches("[a-zA-Z]")) {
@@ -179,13 +290,27 @@ public class Game {
 
     public void printInGameProgress(ArrayList<String> inGameArray) {
         for(String each : inGameArray) {
-            if(Objects.equals(each,"0")){
+            if(Objects.equals(each,"-1")){
                 System.out.print("  ");
             }
             else {
                 System.out.print(each);
             }
         }
+    }
+
+    public boolean checkIfGuessCorrect(String replacement, ArrayList<String> inGameArray, String solutionPhrase) {
+        boolean checkBool = false;
+        for (int i=0; i<inGameArray.size(); i++ ) {
+            if (Objects.equals(inGameArray.get(i), replacement)) {
+                checkBool = Objects.equals(inGameArray.get(i),Character.toString(solutionPhrase.charAt(i)));
+            }
+        }
+        if (checkBool) {
+            currentPlayer.incrementTotalCorrectGuesses();
+            currentPlayer.updateAccuracy();
+        }
+        return checkBool;
     }
 
     public boolean checkIfCryptogramSolved (ArrayList<String> inGameArray, String solutionPhrase) {
@@ -198,26 +323,23 @@ public class Game {
                 }
             }
         }
+        if (toreturn) {
+            currentPlayer.incrementCryptogramsCompleted();
+        }
         return toreturn;
     }
-
 
 
         public static void main(String[] args) {
 
         Game testGame = new Game();
-        ArrayList<String> test = new ArrayList<>();
-        test.add("A");
-        test.add("0");
-        test.add("B");
-        test.add("C");
-        test.add("D");
-        test.add("0");
-        test.add("X");
-        test.add("Y");
-        test.add("Z");
-        System.out.println(testGame.checkIfCryptogramSolved(test,"A BCD XYZ"));
-
         testGame.onStartMenu();
     }
 }
+
+//I am looking right at the other half of me
+//I am just a man not a hero
+//Let us love like there are no goodbyes
+//Every little thing gonna be alright
+//You are Beautiful no matter what they say
+//It is a beautiful day Dont let it get away

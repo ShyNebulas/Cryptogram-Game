@@ -22,7 +22,7 @@ public class NumberCryptogram extends Cryptogram {
 
         for (int i=0; i<phraseToCipher.length(); i++){
 
-            cipheredArray.add(String.valueOf(cipherKey.getOrDefault(Character.toString(phraseToCipher.charAt(i)), 0)));
+            cipheredArray.add(String.valueOf(cipherKey.getOrDefault(Character.toString(phraseToCipher.charAt(i)), -1)));
 
             // 0 spaces words, so 0 in this list means a space between words.
         }
@@ -37,8 +37,8 @@ public class NumberCryptogram extends Cryptogram {
         ArrayList<String> playingList = new ArrayList<>();
 
         for (String eachNum : cipheredArray) {
-            if (Objects.equals(eachNum, "0")){
-                playingList.add("0");
+            if (Objects.equals(eachNum, "-1")){
+                playingList.add("-1");
             }
              else {
                  playingList.add("_");
