@@ -110,7 +110,7 @@ public class Game {
                         break;
 
                     case 2:
-                        inGameArray = undoLetter(inGameArray, currentCryptogram.cipheredArray);
+                       getInputForUndoLetter();
                         break;
 
                     case 3:
@@ -252,26 +252,52 @@ public class Game {
         return inGameArray;
     }
 
-
-    // if (!inGameArray.contains("_"))
-    // checkifCryptSolved
-    // if this is false, then display "unsuccessfully solved cryptogram"
-
-    public ArrayList<String> undoLetter(ArrayList<String> inGameArray,ArrayList<String> cipheredArray) {
+    public void getInputForUndoLetter() {
         int exitCode = 1;
         while (exitCode == 1) {
-            System.out.println("Please enter the letter to undo or 0 to go back to previous menu");
+            System.out.println("Please enter the Cryptogram value to undo");
             Scanner getInput = new Scanner(System.in);
-            try {
+            String Undo = getInput.nextLine().toUpperCase();
+
+            if (Objects.equals(Undo , "0")) {
+                exitCode = 0;
+                break;
 
             }
-            catch (Exception e) {
-                System.out.println("Please enter a valid input");
+            else if(currentCryptogram.cipheredArray.contains(Undo)) {
+                for(int i=0;i< currentCryptogram.cipheredArray.size();i++) {
+                    if (Objects.equals(currentCryptogram.cipheredArray.get(i), Undo)) {
+                        if(inGameArray.get(i).matches("[a-zA-Z]")) {
+                            undoLetter(Undo,inGameArray);
+                        }
+                        else {
+                            System.out.println("This value has not been mapped before cannot undo");
+                            exitCode=0;
+                            break;
+                        }
+                    }
+                }
             }
-
+            else{
+            System.out.println("Invalid Input,This value is not in the puzzle");
+            exitCode = 0;
+            break;
+            }
         }
-        return null;
+        }
+
+    public ArrayList<String> undoLetter(String undo,ArrayList<String> inGameArray) {
+        for(int i=0;i< currentCryptogram.cipheredArray.size();i++) {
+            if (Objects.equals(currentCryptogram.cipheredArray.get(i), undo)) {
+                if(inGameArray.get(i).matches("[a-zA-Z]")) {
+                   inGameArray.set(i,"_");
+                }
+
+            }
+        }
+                return inGameArray;
     }
+
 
     public void printCipheredArray(ArrayList<String> cipheredArray) {
         for( String each : cipheredArray) {
@@ -343,3 +369,5 @@ public class Game {
 //Every little thing gonna be alright
 //You are Beautiful no matter what they say
 //It is a beautiful day Dont let it get away
+
+
