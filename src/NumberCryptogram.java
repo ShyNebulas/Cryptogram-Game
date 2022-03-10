@@ -1,7 +1,5 @@
 package src;
-import java.io.*;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class NumberCryptogram extends Cryptogram {
 
@@ -16,21 +14,36 @@ public class NumberCryptogram extends Cryptogram {
     }
 
 @Override
-    public String generateCipheredPhrase (String phraseToCipher) {
-        String returnPhrase = "";
+    public  ArrayList<String>  generateCipheredArray (String phraseToCipher) {
+       ArrayList<String> cipheredArray = new ArrayList<>();
         phraseToCipher= phraseToCipher.toUpperCase();
         Map<String, Integer> cipherKey;
         cipherKey = getNumberMap();
 
         for (int i=0; i<phraseToCipher.length(); i++){
-            if (!cipherKey.containsKey(Character.toString(phraseToCipher.charAt(i)))) {
-                returnPhrase += "   "; //this is a tab
+
+            cipheredArray.add(String.valueOf(cipherKey.getOrDefault(Character.toString(phraseToCipher.charAt(i)), 0)));
+
+            // 0 spaces words, so 0 in this list means a space between words.
+        }
+        return cipheredArray;
+    }
+
+
+    @Override
+
+    public ArrayList<String> getPlayingArray (ArrayList<String> cipheredArray) {
+
+        ArrayList<String> playingList = new ArrayList<>();
+
+        for (String eachNum : cipheredArray) {
+            if (Objects.equals(eachNum, "0")){
+                playingList.add("0");
             }
-            else {
-                returnPhrase+= " ";  //this is a single space
-                returnPhrase += (cipherKey.get(Character.toString(phraseToCipher.charAt(i))));
+             else {
+                 playingList.add("_");
             }
         }
-        return returnPhrase;
+        return playingList;
     }
 }

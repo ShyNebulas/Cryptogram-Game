@@ -1,5 +1,6 @@
 package src;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,15 +16,29 @@ public class LetterCryptogram extends Cryptogram {
     }
 
     @Override
-    public String generateCipheredPhrase (String phraseToCipher) {
+    public ArrayList<String> generateCipheredArray (String phraseToCipher) {
         Map<String,String> cipherKey;
         cipherKey = getLetterMap();
-        String returnPhrase = "";
+        ArrayList<String> returnArray = new ArrayList<>();
         phraseToCipher= phraseToCipher.toUpperCase();
 
         for (int i=0; i<phraseToCipher.length(); i++){
-            returnPhrase += (cipherKey.getOrDefault(Character.toString(phraseToCipher.charAt(i)), (" ")));
+            returnArray.add((cipherKey.getOrDefault(Character.toString(phraseToCipher.charAt(i)), ("0"))));
         }
-        return returnPhrase;
+        return returnArray;
+    }
+
+    @Override
+    public ArrayList<String> getPlayingArray (ArrayList<String> cipheredArray) {
+        ArrayList<String> playingArray = new ArrayList<>();
+            for (String eachLetter : cipheredArray) {
+                if (eachLetter.matches("[a-zA-Z]")) {
+                    playingArray.add("_");
+                }
+                else {
+                    playingArray.add("0");  // 0 means a split between words.
+                }
+            }
+            return playingArray;
     }
 }

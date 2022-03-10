@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Cryptogram {
     String phrase = readCryptFromFile("phrases.txt");
-    String cipheredPhrase;
+    ArrayList<String> cipheredArray;
     static String[] alphabet = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
             "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
     static int[] numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
@@ -44,5 +44,6 @@ public abstract class Cryptogram {
     }
 
 
-    public abstract String generateCipheredPhrase(String phraseToCipher);
+    public abstract ArrayList<String> getPlayingArray (ArrayList<String> cipheredArray);
+    public abstract ArrayList<String>  generateCipheredArray (String phraseToCipher);
 }
