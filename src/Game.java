@@ -4,7 +4,7 @@ import java.util.*;
 import java.lang.*;
 
 public class Game {
-     Player currentPlayer;
+    Player currentPlayer;
     static Cryptogram currentCryptogram;
     static ArrayList<String> inGameArray;
 
@@ -110,7 +110,7 @@ public class Game {
                         break;
 
                     case 2:
-                       getInputForUndoLetter();
+                        getInputForUndoLetter();
                         break;
 
                     case 3:
@@ -147,101 +147,88 @@ public class Game {
                                         if (inGameArray.contains(replacement)) {
                                             System.out.println("this letter is used. either undo mapping or pick a different letter");
                                             break;
-                                        }
-                                        else {
-                                            inGameArray = enterLetter(toReplace,replacement);
+                                        } else {
+                                            inGameArray = enterLetter(toReplace, replacement);
                                             currentPlayer.incrementTotalGuesses();
-                                            checkIfGuessCorrect(replacement,inGameArray,currentCryptogram.phrase);
-                                            if (checkIfCryptogramSolved(inGameArray,currentCryptogram.phrase)) {
+                                            checkIfGuessCorrect(replacement, inGameArray, currentCryptogram.phrase);
+                                            if (checkIfCryptogramSolved(inGameArray, currentCryptogram.phrase)) {
                                                 System.out.println("You have finished this cryptogram successfully Congratulations!");
-                                                exitCode =0;
+                                                exitCode = 0;
                                                 onStartMenu();
                                                 break;
 
-                                            }
-                                            else if ((!inGameArray.contains("_")) && (!checkIfCryptogramSolved(inGameArray, currentCryptogram.phrase))) {
+                                            } else if ((!inGameArray.contains("_")) && (!checkIfCryptogramSolved(inGameArray, currentCryptogram.phrase))) {
                                                 System.out.println("Your solution is incorrect, you have unsuccessfully finished cryptogram");
-                                                exitCode=0;
+                                                exitCode = 0;
                                                 onStartMenu();
                                                 break;
                                             }
-                                            exitCode=0;
+                                            exitCode = 0;
                                             break;
                                         }
 
                                         // if inGameArray.contains (replacement)
                                         // display error that this letter is used. either undo mapping or pick a different letter
 
-                                    }
-                                    else if (Objects.equals(replacement,"0")) {
-                                        exitCode=0;
+                                    } else if (Objects.equals(replacement, "0")) {
+                                        exitCode = 0;
                                         break;
-                                    }
-                                    else {
+                                    } else {
                                         System.out.println("Please enter a valid alphabet letter.");
                                     }
 
-                                }
-                                else if (Objects.equals(option,"1")){
-                                    exitCode=0;
+                                } else if (Objects.equals(option, "1")) {
+                                    exitCode = 0;
                                     break;
-                                }
-                                else {
+                                } else {
                                     System.out.println("please pick a valid option");
                                 }
-                            }
-                            else {
+                            } else {
                                 System.out.println("Please enter the replacement letter or 0 to go back to previous menu");
                                 Scanner getSecondInput = new Scanner(System.in);
                                 String replacement = getSecondInput.nextLine().toUpperCase();
                                 if (replacement.matches("[a-zA-Z]")) {
                                     if (inGameArray.contains(replacement)) {
                                         System.out.println("this letter is used. either undo mapping or pick a different letter");
-                                        exitCode =0;
+                                        exitCode = 0;
                                         break;
-                                    }
-                                    else {
-                                        inGameArray=enterLetter(toReplace, replacement);
+                                    } else {
+                                        inGameArray = enterLetter(toReplace, replacement);
                                         currentPlayer.incrementTotalGuesses();
-                                        checkIfGuessCorrect(replacement,inGameArray,currentCryptogram.phrase);
-                                        if (checkIfCryptogramSolved(inGameArray,currentCryptogram.phrase)) {
+                                        checkIfGuessCorrect(replacement, inGameArray, currentCryptogram.phrase);
+                                        if (checkIfCryptogramSolved(inGameArray, currentCryptogram.phrase)) {
                                             System.out.println("You have finished this cryptogram successfully Congratulations!");
-                                            exitCode =0;
+                                            exitCode = 0;
                                             onStartMenu();
                                             break;
-                                        }
-                                        else if ((!inGameArray.contains("_")) && (!checkIfCryptogramSolved(inGameArray, currentCryptogram.phrase))) {
+                                        } else if ((!inGameArray.contains("_")) && (!checkIfCryptogramSolved(inGameArray, currentCryptogram.phrase))) {
                                             System.out.println("Your solution is incorrect, you have unsuccessfully finished cryptogram");
-                                            exitCode=0;
+                                            exitCode = 0;
                                             onStartMenu();
                                             break;
                                         }
-                                        exitCode=0;
+                                        exitCode = 0;
                                         break;
                                     }
-                                }
-                                else {
+                                } else {
                                     System.out.println("Please enter a valid letter from the alphabet A to Z");
                                 }
                             }
                         }
                     }
-                }
-                else if (Objects.equals(toReplace,"0")) {
-                    exitCode=0;
+                } else if (Objects.equals(toReplace, "0")) {
+                    exitCode = 0;
                     break;
-                }
-                else {
+                } else {
                     System.out.println("The puzzle does not have this value");
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Invalid Input");
             }
         }
     }
 
-    public ArrayList<String> enterLetter(String toReplace, String replacement){
+    public ArrayList<String> enterLetter(String toReplace, String replacement) {
         currentPlayer.incrementTotalGuesses();
         for (int i = 0; i < inGameArray.size(); i++) {
             if (Objects.equals(currentCryptogram.cipheredArray.get(i), toReplace.toUpperCase())) {
@@ -249,6 +236,9 @@ public class Game {
             }
         }
         checkIfGuessCorrect(replacement, inGameArray, currentCryptogram.phrase);
+        if (checkIfCryptogramSolved(inGameArray,currentCryptogram.phrase)) {
+            currentPlayer.incrementCryptogramsCompleted();
+        }
         return inGameArray;
     }
 
@@ -259,67 +249,63 @@ public class Game {
             Scanner getInput = new Scanner(System.in);
             String Undo = getInput.nextLine().toUpperCase();
 
-            if (Objects.equals(Undo , "0")) {
+            if (Objects.equals(Undo, "0")) {
                 exitCode = 0;
                 break;
 
             }
-            else if(currentCryptogram.cipheredArray.contains(Undo)) {
-                for(int i=0;i< currentCryptogram.cipheredArray.size();i++) {
+            else if (currentCryptogram.cipheredArray.contains(Undo)) {
+                for (int i = 0; i < currentCryptogram.cipheredArray.size(); i++) {
                     if (Objects.equals(currentCryptogram.cipheredArray.get(i), Undo)) {
-                        if(inGameArray.get(i).matches("[a-zA-Z]")) {
-                            undoLetter(Undo,inGameArray);
-                        }
-                        else {
+                        if (inGameArray.get(i).matches("[a-zA-Z]")) {
+                            undoLetter(Undo, inGameArray);
+                            exitCode =0;
+                            break;
+                        } else {
                             System.out.println("This value has not been mapped before cannot undo");
-                            exitCode=0;
+                            exitCode = 0;
                             break;
                         }
                     }
                 }
-            }
-            else{
-            System.out.println("Invalid Input,This value is not in the puzzle");
-            exitCode = 0;
-            break;
+            } else {
+                System.out.println("Invalid Input,This value is not in the puzzle");
+                exitCode = 0;
+                break;
             }
         }
-        }
+    }
 
-    public ArrayList<String> undoLetter(String undo,ArrayList<String> inGameArray) {
-        for(int i=0;i< currentCryptogram.cipheredArray.size();i++) {
+    public ArrayList<String> undoLetter(String undo, ArrayList<String> inGameArray) {
+        for (int i = 0; i < currentCryptogram.cipheredArray.size(); i++) {
             if (Objects.equals(currentCryptogram.cipheredArray.get(i), undo)) {
-                if(inGameArray.get(i).matches("[a-zA-Z]")) {
-                   inGameArray.set(i,"_");
+                if (inGameArray.get(i).matches("[a-zA-Z]")) {
+                    inGameArray.set(i, "_");
                 }
 
             }
         }
-                return inGameArray;
+        return inGameArray;
     }
 
 
     public void printCipheredArray(ArrayList<String> cipheredArray) {
-        for( String each : cipheredArray) {
-            if(Objects.equals(each,"-1")){
+        for (String each : cipheredArray) {
+            if (Objects.equals(each, "-1")) {
                 System.out.print("  ");
-            }
-            else if (each.matches("[a-zA-Z]")) {
+            } else if (each.matches("[a-zA-Z]")) {
                 System.out.print(each);
-            }
-
-            else {
+            } else {
                 System.out.print(each + " ");
             }
         }
     }
 
     public void printInGameProgress(ArrayList<String> inGameArray) {
-        for(String each : inGameArray) {
-            if(Objects.equals(each,"-1")){
+        for (String each : inGameArray) {
+            if (Objects.equals(each, "-1")) {
                 System.out.print("  ");
-            }
-            else {
+            } else {
                 System.out.print(each);
             }
         }
@@ -327,9 +313,9 @@ public class Game {
 
     public boolean checkIfGuessCorrect(String replacement, ArrayList<String> inGameArray, String solutionPhrase) {
         boolean checkBool = false;
-        for (int i=0; i<inGameArray.size(); i++ ) {
+        for (int i = 0; i < inGameArray.size(); i++) {
             if (Objects.equals(inGameArray.get(i), replacement)) {
-                checkBool = Objects.equals(inGameArray.get(i),Character.toString(solutionPhrase.charAt(i)));
+                checkBool = Objects.equals(inGameArray.get(i), Character.toString(solutionPhrase.charAt(i)));
             }
         }
         if (checkBool) {
@@ -340,34 +326,12 @@ public class Game {
     }
 
     public boolean checkIfCryptogramSolved (ArrayList<String> inGameArray, String solutionPhrase) {
-        boolean toreturn = false;
-        for (int i =0; i<inGameArray.size(); i++) {
-            if(inGameArray.get(i).matches("[a-zA-Z]") && Character.isLetter(solutionPhrase.charAt(i))) {
-                toreturn = Objects.equals(inGameArray.get(i),Character.toString(solutionPhrase.charAt(i)));
-                if(!toreturn) {
-                    return false;
-                }
-            }
-        }
-        if (toreturn) {
-            currentPlayer.incrementCryptogramsCompleted();
-        }
-        return toreturn;
+        String test = String.join(",", inGameArray).replaceAll(",", "").replaceAll("-1", " ");
+        return Objects.equals(test.toUpperCase(), solutionPhrase.toUpperCase());
     }
 
-
-        public static void main(String[] args) {
-
+    public static void main(String[] args) {
         Game testGame = new Game();
         testGame.onStartMenu();
     }
 }
-
-//I am looking right at the other half of me
-//I am just a man not a hero
-//Let us love like there are no goodbyes
-//Every little thing gonna be alright
-//You are Beautiful no matter what they say
-//It is a beautiful day Dont let it get away
-
-
