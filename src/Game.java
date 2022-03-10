@@ -258,19 +258,63 @@ public class Game {
     // if this is false, then display "unsuccessfully solved cryptogram"
 
     public ArrayList<String> undoLetter(ArrayList<String> inGameArray,ArrayList<String> cipheredArray) {
+
+        // JELLO - cip puzzle
+//  - users soln.
+// J -> B
+// B
+// Undo (B)
+// Undo (J)
+// type the crypt value that you need to undo
+// cipheredarray.contains(undo)
+// cipheredarray.get(i) == undo
+// if (inGameArray(i) .matches a to z) {
+//  undo it;
+// else {
+// this letter has not been mapped before cant undo,.
+//
         int exitCode = 1;
         while (exitCode == 1) {
-            System.out.println("Please enter the letter to undo or 0 to go back to previous menu");
+            System.out.println("Please enter the Cryptogram value to undo");
             Scanner getInput = new Scanner(System.in);
-            try {
+            String Undo = getInput.nextLine().toUpperCase();
 
-            }
-            catch (Exception e) {
-                System.out.println("Please enter a valid input");
-            }
+                if (Objects.equals(Undo , "0"))
+                {
+                    exitCode = 0;
+                    break;
 
+                }
+               else if(cipheredArray.contains(Undo))
+               {
+                   for(int i=0;i< cipheredArray.size();i++)
+                   {
+                       if(Objects.equals(cipheredArray.get(i), Undo))
+                       {
+                           if(inGameArray.get(i).matches("[a-zA-Z]"))
+                           {
+                               inGameArray.set(i,"_");
+
+                           }
+                           else
+                           {
+                               System.out.println("This value has not been mapped before, can not do Undo");
+                               break;
+                           }
+
+                       }
+
+                   }
+                   return inGameArray;
+
+               }
+               else{
+                   System.out.println("Invalid Input,This value is not in the puzzle");
+                   exitCode = 0;
+                   break;
+               }
         }
-        return null;
+        return inGameArray;
     }
 
     public void printCipheredArray(ArrayList<String> cipheredArray) {
