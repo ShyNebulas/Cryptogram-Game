@@ -7,6 +7,11 @@ public class Game {
     Player currentPlayer;
     static Cryptogram currentCryptogram;
     static ArrayList<String> inGameArray;
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_CYAN = "\u001B[36m";
 
     public Game() {
     }
@@ -85,10 +90,10 @@ public class Game {
         int selection = -1;
         int exit = 0;
         while (exit == 0) {
-            System.out.println("Original Puzzle: \n");
+            System.out.println(ANSI_RED +"Original Puzzle: \n"+ ANSI_RESET);
             printCipheredArray(currentCryptogram.cipheredArray);
             System.out.println("\n");
-            System.out.println("Your Progress:\n");
+            System.out.println(ANSI_YELLOW+"Your Progress:\n"+ANSI_RESET);
             printInGameProgress(inGameArray);
             System.out.println("\n");
             Scanner scInGame = new Scanner(System.in);
@@ -128,7 +133,7 @@ public class Game {
     public void getInputForEnterLetter() {
         int exitCode = 1;
         while (exitCode == 1) {
-            System.out.println("Please enter the value to replace or 0 to go back to previous menu");
+            System.out.println(ANSI_CYAN+"Please enter the value to replace or 0 to go back to previous menu"+ANSI_RESET);
             Scanner getInput = new Scanner(System.in);
             try {
                 String toReplace = getInput.nextLine().toUpperCase();
@@ -140,7 +145,7 @@ public class Game {
                                 Scanner getThirdInput = new Scanner(System.in);
                                 String option = getThirdInput.nextLine();
                                 if (Objects.equals(option, "0")) {
-                                    System.out.println("Please enter the replacement letter or 0 to go back to previous menu");
+                                    System.out.println(ANSI_BLUE+"Please enter the replacement letter or 0 to go back to previous menu"+ANSI_RESET);
                                     Scanner getSecondInput = new Scanner(System.in);
                                     String replacement = getSecondInput.nextLine().toUpperCase();
                                     if (replacement.matches("[a-zA-Z]")) {
@@ -294,7 +299,7 @@ public class Game {
             if (Objects.equals(each, "-1")) {
                 System.out.print("  ");
             } else if (each.matches("[a-zA-Z]")) {
-                System.out.print(each);
+                System.out.print(ANSI_BLUE+each+ANSI_RESET);
             } else {
                 System.out.print(each + " ");
             }
@@ -306,7 +311,7 @@ public class Game {
             if (Objects.equals(each, "-1")) {
                 System.out.print("  ");
             } else {
-                System.out.print(each);
+                System.out.print(ANSI_YELLOW+each+ANSI_RESET);
             }
         }
     }
