@@ -84,9 +84,65 @@ public class SavingLoading {
 
     }
 
-    /*
+    static void loadPlayer(Player player) {
+
+        Scanner scanner = null;
+
+        try {
+
+            scanner = new Scanner(new File("player.txt"));
+
+        } catch(FileNotFoundException error) {
+
+            System.out.println("[Error] 'player.txt' file not found");
+            System.exit(1);
+        }
+
+        String[] lines = scanner.nextLine().split(";");
+
+        player.setUsername(lines[0]);
+        player.setAccuracy(Double.parseDouble(lines[1]));
+        player.setTotalGuesses(Integer.valueOf(lines[2]));
+        player.setTotalCorrectGuesses(Integer.valueOf(lines[3]));
+        player.setCryptogramsPlayed(Integer.valueOf(lines[4]));
+        player.setCryptogramsCompleted(Integer.valueOf(lines[5]));
+
+    }
+
+    static void savePlayer(Player player) {
+
+        try {
+
+            File file = new File("player.txt");
+            file.createNewFile();
+
+        } catch(IOException error) {
+
+            System.out.println("[Error] Unable to create 'player.txt'");
+            System.exit(1);
+
+        }
+
+        try {
+
+            FileWriter fileWriter = new FileWriter("player.txt");
+
+            fileWriter.write(player.toString());
+
+            fileWriter.close();
+
+        } catch(IOException error) {
+
+            System.out.println("[Error] FileWriter caused an error while writing to 'player.txt");
+            System.exit(1);
+
+        }
+
+    }
 
     public static void main(String[] args) {
+
+        /*
 
         Cryptogram test = new LetterCryptogram();
         String solutionPhrase = test.phrase;
@@ -106,8 +162,20 @@ public class SavingLoading {
         System.out.println(test2.toString());
         System.out.println(blah.toString());
 
-    }
+        */
 
-    */
+        /*
+        Player player = new Player("Cameron", 1, 1, 1, 1, 5);
+        SavingLoading.savePlayer(player);
+
+        Player player2 = new Player("Cameron", 0, 0, 0, 0, 0);
+
+        SavingLoading.loadPlayer(player2);
+
+        System.out.println(player2);
+
+         */
+
+    }
 
 }

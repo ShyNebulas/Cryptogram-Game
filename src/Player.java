@@ -30,6 +30,8 @@ public class Player {
         return this.accuracy;
     }
 
+    public void setAccuracy(double accuracy) { this.accuracy = accuracy; }
+
     public void updateAccuracy() {
         this.accuracy = ((double) this.totalGuesses /this.totalCorrectGuesses) * 100;
     }
@@ -38,6 +40,8 @@ public class Player {
         return this.totalGuesses;
     }
 
+    public void setTotalGuesses(int totalGuesses) { this.totalGuesses = totalGuesses; }
+
     public void incrementTotalGuesses() {
         this.totalGuesses = this.totalGuesses+1;
     }
@@ -45,6 +49,9 @@ public class Player {
     public int getTotalCorrectGuesses() {
         return this.totalCorrectGuesses;
     }
+
+    public void setTotalCorrectGuesses(int totalCorrectGuesses) { this.totalCorrectGuesses = totalCorrectGuesses; }
+
     public void incrementTotalCorrectGuesses() {
         this.totalCorrectGuesses = this.totalCorrectGuesses+1;
     }
@@ -52,6 +59,8 @@ public class Player {
     public int getCryptogramsPlayed() {
         return this.cryptogramsPlayed;
     }
+
+    public void setCryptogramsPlayed(int cryptogramsPlayed) { this.cryptogramsPlayed = cryptogramsPlayed; }
 
     public void incrementCryptogramsPlayed() {
         this.cryptogramsPlayed = this.cryptogramsPlayed+1;
@@ -61,8 +70,15 @@ public class Player {
         return this.cryptogramsCompleted;
     }
 
+    public void setCryptogramsCompleted(int cryptogramsCompleted) { this.cryptogramsCompleted = cryptogramsCompleted; }
+
     public void incrementCryptogramsCompleted() {
         this.cryptogramsCompleted = this.cryptogramsCompleted +1;
+    }
+
+    @Override
+    public String toString() {
+        return this.username + ";" + this.accuracy + ";" + this.totalGuesses + ";" + this.totalCorrectGuesses + ";" + this.cryptogramsPlayed + ";" + this.cryptogramsCompleted;
     }
 
 }
