@@ -18,7 +18,6 @@ public class Player {
         this.cryptogramsCompleted=cryptogramsCompleted;
     }
 
-
     public String getUsername() {
         return this.username;
     }
