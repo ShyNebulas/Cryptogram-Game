@@ -100,9 +100,9 @@ public class SavingLoading {
 
         try {
 
-            FileWriter fileWriter = new FileWriter("player.txt");
+            FileWriter fileWriter = new FileWriter("player.txt", true);
 
-            fileWriter.write(player.toString());
+            fileWriter.write(player.toString() + "\n");
 
             fileWriter.close();
 
@@ -139,17 +139,13 @@ public class SavingLoading {
 
         */
 
-        /*
         Player player = new Player("Cameron", 1, 1, 1, 1, 5);
         SavingLoading.savePlayer(player);
 
         Player player2 = new Player("Cameron", 0, 0, 0, 0, 0);
 
-        SavingLoading.loadPlayer(player2);
 
-        System.out.println(player2);
-
-         */
+        SavingLoading.savePlayer(player2);
 
     }
 
