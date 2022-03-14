@@ -84,31 +84,6 @@ public class SavingLoading {
 
     }
 
-    static void loadPlayer(Player player) {
-
-        Scanner scanner = null;
-
-        try {
-
-            scanner = new Scanner(new File("player.txt"));
-
-        } catch(FileNotFoundException error) {
-
-            System.out.println("[Error] 'player.txt' file not found");
-            System.exit(1);
-        }
-
-        String[] lines = scanner.nextLine().split(";");
-
-        player.setUsername(lines[0]);
-        player.setAccuracy(Double.parseDouble(lines[1]));
-        player.setTotalGuesses(Integer.valueOf(lines[2]));
-        player.setTotalCorrectGuesses(Integer.valueOf(lines[3]));
-        player.setCryptogramsPlayed(Integer.valueOf(lines[4]));
-        player.setCryptogramsCompleted(Integer.valueOf(lines[5]));
-
-    }
-
     static void savePlayer(Player player) {
 
         try {
