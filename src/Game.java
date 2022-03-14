@@ -26,7 +26,8 @@ public class Game {
             System.out.println("...................\n");
             System.out.println("1-Press 1 to play Alphabet Cryptogram");
             System.out.println("2-Press 2 to play Number Cryptogram");
-            System.out.println("3-Press 3 to Quit");
+            System.out.println("3-Press 3 to view your details");
+            System.out.println("4-Press 4 to Quit");
 
             selection = scCryptType.nextInt();
 
@@ -41,6 +42,9 @@ public class Game {
                         playNumberCryptogram();
                     }
                     case 3 -> {
+                    	PlayerDetails(currentPlayer);
+                    }
+                    case 4 -> {
                         exit = 1;
                         System.out.println("BYE!");
                     }
@@ -80,6 +84,31 @@ public class Game {
         inGameMenu();
 
     }
+    
+    public void PlayerDetails(Player currentPLayer) {
+    	
+    	String username = currentPlayer.getUsername();
+    	
+    	System.out.println("Player Details:");
+    	System.out.println("...................\n");
+    	System.out.println("Username: "+currentPlayer.getUsername());
+    	System.out.println("Correct Guesses: "+currentPlayer.getAccuracy());
+    	System.out.println("Total Guesses: "+currentPlayer.getTotalGuesses());
+    	System.out.println("Total Correct Guesses:"+currentPlayer.getTotalCorrectGuesses());
+    	System.out.println("Number of Crytograms Played: "+currentPlayer.getCryptogramsPlayed());
+    	System.out.println("Number of Crytograms Completed: "+currentPlayer.getCryptogramsCompleted());
+
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   
 
     public void inGameMenu() {
         int selection = -1;
