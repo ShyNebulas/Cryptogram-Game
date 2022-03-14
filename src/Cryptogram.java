@@ -43,6 +43,10 @@ public abstract class Cryptogram {
         }
     }
 
+    @Override
+    public String toString() {
+        return this.phrase + ";" + this.cipheredArray;
+    }
 
     public abstract ArrayList<String> getPlayingArray (ArrayList<String> cipheredArray);
     public abstract ArrayList<String>  generateCipheredArray (String phraseToCipher);

@@ -115,7 +115,7 @@ public class Game {
                         break;
 
                     case 2:
-                        getInputForUndoLetter();
+                       getInputForUndoLetter();
                         break;
 
                     case 3:
@@ -155,6 +155,9 @@ public class Game {
                                         } else {
                                             inGameArray = enterLetter(toReplace, replacement);
                                             currentPlayer.incrementTotalGuesses();
+                                            currentPlayer.incrementTotalGuesses();
+                                            currentPlayer.incrementTotalGuesses();
+
                                             checkIfGuessCorrect(replacement, inGameArray, currentCryptogram.phrase);
                                             if (checkIfCryptogramSolved(inGameArray, currentCryptogram.phrase)) {
                                                 System.out.println("You have finished this cryptogram successfully Congratulations!");
@@ -234,7 +237,6 @@ public class Game {
     }
 
     public ArrayList<String> enterLetter(String toReplace, String replacement) {
-        currentPlayer.incrementTotalGuesses();
         for (int i = 0; i < inGameArray.size(); i++) {
             if (Objects.equals(currentCryptogram.cipheredArray.get(i), toReplace.toUpperCase())) {
                 inGameArray.set(i, replacement.toUpperCase());
