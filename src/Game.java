@@ -1,14 +1,43 @@
 package src;
 
 import java.util.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.lang.*;
 
 public class Game {
-    Player currentPlayer;
+    Player currentPlayer = new Player("", 0, 0, 0, 0, 0);
     static Cryptogram currentCryptogram;
     static ArrayList<String> inGameArray;
 
     public Game() {
+    	Scanner keyboard = new Scanner(System.in);
+    System.out.println("Do you want to load your details");
+    System.out.println("Enter y or n\n");
+	String response = keyboard.next();
+	while (!response.equalsIgnoreCase("y") && !response.equalsIgnoreCase("n")) {
+	  System.out.println("\nInvalid response. Try again.");
+	  response = keyboard.next();
+	} 
+	if (response.equalsIgnoreCase("n")) {
+		onStartMenu();
+	} else {
+		try {
+			Scanner input = new Scanner(new File("C://Users//benoo//Desktop//player.txt"));
+				    currentPlayer.setUsername(input.nextLine());
+				    currentPlayer.setAccuracy(input.nextDouble());
+				    currentPlayer.setTotalGuesses(input.nextInt());
+				    currentPlayer.setTotalCorrectGuesses(input.nextInt());
+				    currentPlayer.setCryptogramsPlayed(input.nextInt());
+				    currentPlayer.setCryptogramsCompleted(input.nextInt());
+				input.close();
+				onStartMenu();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
     }
 
     public void onStartMenu() {
@@ -17,7 +46,6 @@ public class Game {
         System.out.println("Enter your username");
         System.out.println("...................\n");
         name = scUsername.nextLine();
-        currentPlayer = new Player(name, 0, 0, 0, 0, 0);
         int selection;
         int exit = 0;
         while (exit == 0) {
@@ -85,7 +113,7 @@ public class Game {
 
     }
     
-    public void PlayerDetails(Player currentPLayer) {
+    public void PlayerDetails(Player currentPlayer) {
     	
     	String username = currentPlayer.getUsername();
     	
@@ -97,18 +125,10 @@ public class Game {
     	System.out.println("Total Correct Guesses:"+currentPlayer.getTotalCorrectGuesses());
     	System.out.println("Number of Crytograms Played: "+currentPlayer.getCryptogramsPlayed());
     	System.out.println("Number of Crytograms Completed: "+currentPlayer.getCryptogramsCompleted());
+    	
 
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-   
 
     public void inGameMenu() {
         int selection = -1;
