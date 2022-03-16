@@ -35,13 +35,13 @@ public class StatsTest {
     @Test
     void testGetCryptogramsPlayed()
     {
-        assertEquals(4, p.getCryptogramsPlayed());
+        assertEquals(3, p.getCryptogramsPlayed());
     }
 
     @Test
     void testGetCryptogramsCompleted()
     {
-        assertEquals(4, p.getCryptogramsCompleted());
+        assertEquals(1, p.getCryptogramsCompleted());
     }
 
     @Test
