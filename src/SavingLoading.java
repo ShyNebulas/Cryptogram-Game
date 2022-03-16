@@ -114,10 +114,10 @@ public class SavingLoading {
         }
 
     }
-
+/*
     public static void main(String[] args) {
 
-        /*
+
 
         Cryptogram test = new LetterCryptogram();
         String solutionPhrase = test.phrase;
@@ -137,7 +137,7 @@ public class SavingLoading {
         System.out.println(test2.toString());
         System.out.println(blah.toString());
 
-        */
+
 
         Player player = new Player("Cameron", 1, 1, 1, 1, 5);
         SavingLoading.savePlayer(player);
@@ -148,5 +148,5 @@ public class SavingLoading {
         SavingLoading.savePlayer(player2);
 
     }
-
+*/
 }
