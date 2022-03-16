@@ -62,19 +62,19 @@ public class StatsTest {
     @Test
     void testIncrementCryptogramsCompleted() {
         p.incrementCryptogramsCompleted();
-        assertEquals(5, p.getCryptogramsCompleted());
+        assertEquals(2, p.getCryptogramsCompleted());
 
         p.incrementCryptogramsCompleted();
-        assertEquals(6, p.getCryptogramsCompleted());
+        assertEquals(3, p.getCryptogramsCompleted());
     }
 
     @Test
     void testIncrementTotalGuesses() {
         p.incrementTotalGuesses();
-        assertEquals(2.0, p.getTotalGuesses());
+        assertEquals(11, p.getTotalGuesses());
 
         p.incrementTotalGuesses();
-        assertEquals(15.0, p.getTotalGuesses());
+        assertEquals(12, p.getTotalGuesses());
     }
 
     @Test
@@ -92,7 +92,7 @@ public class StatsTest {
         assertEquals(4.0, p.getCryptogramsPlayed());
 
         p.incrementCryptogramsPlayed();
-        assertEquals(3.0, p.getCryptogramsPlayed());
+        assertEquals(5.0, p.getCryptogramsPlayed());
     }
 
 }
