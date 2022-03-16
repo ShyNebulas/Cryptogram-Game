@@ -24,12 +24,12 @@ public class StatsTest {
     @Test
     void testGetTotalGuesses()
     {
-        assertEquals(10.0, p.getTotalGuesses());
+        assertEquals(10, p.getTotalGuesses());
     }
 
     @Test
     void testGetCorrectGuesses() {
-        assertEquals(5.0, p.getTotalCorrectGuesses());
+        assertEquals(5, p.getTotalCorrectGuesses());
     }
 
     @Test
@@ -80,19 +80,19 @@ public class StatsTest {
     @Test
     void testIncrementCorrectGuesses() {
         p.incrementTotalCorrectGuesses();
-        assertEquals(6.0, p.getTotalCorrectGuesses());
+        assertEquals(6, p.getTotalCorrectGuesses());
 
         p.incrementTotalCorrectGuesses();
-        assertEquals(7.0, p.getTotalCorrectGuesses());
+        assertEquals(7, p.getTotalCorrectGuesses());
     }
 
     @Test
     void testIncrementCryptogramsPlayed() {
         p.incrementCryptogramsPlayed();
-        assertEquals(4.0, p.getCryptogramsPlayed());
+        assertEquals(4, p.getCryptogramsPlayed());
 
         p.incrementCryptogramsPlayed();
-        assertEquals(5.0, p.getCryptogramsPlayed());
+        assertEquals(5, p.getCryptogramsPlayed());
     }
 
 }
