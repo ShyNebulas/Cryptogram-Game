@@ -1,6 +1,7 @@
 package src;
 
-import static org.junit.Assert.assertTrue;
+//import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayInputStream;
