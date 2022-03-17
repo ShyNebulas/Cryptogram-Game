@@ -56,7 +56,7 @@ public class StatsTest {
     @Test
     void testUpdateAccuracy() {
         p.updateAccuracy();
-        assertEquals(90.0, p.getAccuracy());
+        assertEquals(200.0, p.getAccuracy());
     }
 
     @Test
