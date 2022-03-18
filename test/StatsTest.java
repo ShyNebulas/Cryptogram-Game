@@ -1,8 +1,9 @@
-package src;
+package test;
 
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+import src.Player;
 
 public class StatsTest {
 
@@ -56,7 +57,7 @@ public class StatsTest {
     @Test
     void testUpdateAccuracy() {
         p.updateAccuracy();
-        assertEquals(200.0, p.getAccuracy());
+        assertEquals(50.0, p.getAccuracy());
     }
 
     @Test

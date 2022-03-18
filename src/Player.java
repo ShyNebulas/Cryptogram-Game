@@ -33,7 +33,7 @@ public class Player {
     public void setAccuracy(double accuracy) { this.accuracy = accuracy; }
 
     public void updateAccuracy() {
-        this.accuracy = ((double) this.totalGuesses /this.totalCorrectGuesses) * 100;
+        this.accuracy = ((double) this.totalCorrectGuesses /this.totalGuesses) * 100;
     }
 
     public int getTotalGuesses() {

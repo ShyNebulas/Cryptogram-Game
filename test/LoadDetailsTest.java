@@ -1,4 +1,4 @@
-package src;
+package test;
 
 //import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,6 +16,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import src.Game;
+import src.Player;
 
 class LoadDetailsTest {
 
@@ -30,8 +32,8 @@ void setUp() {
 void LoadTheirDetails() {
 	Scanner input;
 	try {
-		input = new Scanner(new File("C://Users//benoo//Desktop//player.txt")); //gets users details
-		a = new Player(input.nextLine(), input.nextDouble(), input.nextInt(), input.nextInt(), input.nextInt(), input.nextInt()); //stores users details
+		input = new Scanner(new File("player.txt")).useDelimiter(";"); //gets users details
+		a = new Player(input.next(), input.nextDouble(), input.nextInt(), input.nextInt(), input.nextInt(), input.nextInt()); //stores users details
 	} catch (FileNotFoundException e) {
 		e.printStackTrace();
 	}
