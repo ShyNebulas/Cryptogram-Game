@@ -23,7 +23,7 @@ public class Game {
             Scanner scUsername = new Scanner(System.in);
             System.out.println("Enter your username");
             System.out.println("...................\n");
-            name = scUsername.nextLine();
+            name = scUsername.nextLine().toLowerCase();
             Scanner keyboard = new Scanner(System.in);
 
 
@@ -53,7 +53,7 @@ public class Game {
                                 playNumberCryptogram();
                             }
                             case 3 -> {
-                                loadOldCrypt();
+                                SavingLoading.loadCryptogram(name, currentCryptogram, inGameArray, "cryptogram.txt");
                             }
                             case 4 -> {
                                 PlayerDetails(currentPlayer);
@@ -151,7 +151,7 @@ public class Game {
 
                             case 3:
                                 SavingLoading.savePlayer(currentPlayer, "player.txt");
-                                SavingLoading.saveCryptogram(currentCryptogram, inGameArray, "cryptogram.txt");
+                                SavingLoading.saveCryptogram(currentPlayer.getUsername(), currentCryptogram, inGameArray, "cryptogram.txt");
                                 break;
                             case 4:
                                 exit = 1;
@@ -331,7 +331,8 @@ public class Game {
                 return inGameArray;
             }
 
-            public void loadOldStats() {
+            public void loadOldStats(String name) {
+            Scanner keyboard = new Scanner(System.in);
             String response = keyboard.next();
             while (!response.equalsIgnoreCase("y") && !response.equalsIgnoreCase("n")) {
                 System.out.println("\nInvalid response. Try again.");
@@ -349,7 +350,7 @@ public class Game {
                         input.close();
                         currentCryptogram = new LetterCryptogram();
                         currentCryptogram.cipheredArray = new ArrayList<>();
-                        SavingLoading.loadCryptogram(currentCryptogram, inGameArray, "cryptogram.txt"); //need exact type
+                        SavingLoading.loadCryptogram(name, currentCryptogram, inGameArray, "cryptogram.txt"); //need exact type
                         inGameMenu();
                     }
                     else {

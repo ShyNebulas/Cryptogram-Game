@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,49 +22,68 @@ public class SavingLoading {
     static void loadCryptogram(String playerName, Cryptogram cryptogramToSolve, ArrayList<String> cryptogramPlayerProgress, String filename) {
 
         Scanner scanner = null;
-        List<String> lines = new ArrayList<>();
 
         try {
 
             scanner = new Scanner(new File(filename));
 
-        } catch (FileNotFoundException error) {
+        } catch(FileNotFoundException error) {
 
-            System.out.println("[Error] 'savedProgress.txt' file not found");
+            System.out.println("[Error]" + "'" + filename + "'" + "file not found");
             System.exit(1);
+
         }
 
-        while (scanner.hasNextLine()) {
-            lines.add(scanner.nextLine());
-        }
-        int toCheck = 0;
+        boolean flag = false;
 
-        for (int i = 0; i<lines.size(); i++) {
+        while(scanner.hasNextLine()) {
 
-            String[] line = lines.get(i).split(";");
-            if(Objects.equals(line[0], playerName)) {
-                cryptogramToSolve.phrase = line[1];
+            String[] splitLine = scanner.nextLine().split(";");
+
+            if(splitLine[1].equals(playerName)) {
+
+                flag = true;
+
+                if(splitLine.equals("L")) {
+
+                    cryptogramToSolve = new LetterCryptogram();
+
+                } else {
+
+                    cryptogramToSolve = new NumberCryptogram();
+
+                }
+
+                cryptogramToSolve.phrase = splitLine[1];
 
                 // Converts line[1] (cipheredArray) to ArrayList
-                for (String character : line[2].substring(1, line[2].length() - 1).replaceAll(" ", "").split(",")) {
+                for(String character: splitLine[1].substring(1, splitLine[1].length() - 1).replaceAll(" ", "").split(",")) {
 
                     cryptogramToSolve.cipheredArray.add(character);
 
                 }
 
                 // Converts line[2] (PlayerProgress) to ArrayList
-                for (String character : line[3].substring(1, line[3].length() - 1).replaceAll(" ", "").split(",")) {
+                for(String character: splitLine[2].substring(1, splitLine[2].length() - 1).replaceAll(" ", "").split(",")) {
 
                     cryptogramPlayerProgress.add(character);
 
                 }
-                toCheck =1;
+
+                break;
+
             }
+
         }
-        if(toCheck ==0) {
-            System.out.println("Username not found, please retry or start a new game");
+
+        if(!flag) {
+
+            System.out.println(playerName + " not found");
+
         }
+
         scanner.close();
+
     }
 
     /*
@@ -69,55 +92,46 @@ public class SavingLoading {
      */
     static void saveCryptogram(String playerName, Cryptogram cryptogramToSolve, ArrayList<String> cryptogramPlayerProgress, String filename) {
 
-        List<String> lines = new ArrayList<>();
-        Scanner scanner = null;
         try {
-            File file = new File(filename);
-            if(file.exists()) {
-                try {
-                    scanner = new Scanner(new File(filename));
 
-                }
-                catch (FileNotFoundException error) {
+            Path path = Paths.get(filename);
+            List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 
-                    System.out.println("[Error] 'savedProgress.txt' file not found");
-                    System.exit(1);
-                }
-                while (scanner.hasNextLine()) {
-                    lines.add(scanner.nextLine());
-                }
-                int toCheck = 0;
+            int lineNumber = 0;
+            boolean flag = false;
 
-                for (int i = 0; i<lines.size(); i++) {
+            for(String line: lines) {
 
-                    String[] line = lines.get(i).split(";");
-                    if(Objects.equals(line[0], playerName)) {
-                        try {
+                String[] lineSplit = line.split(";");
 
-                            FileWriter fileWriter = new FileWriter(filename);
+                if(lineSplit[0].equals(playerName)) {
 
-                            fileWriter.write(playerName + ";" +cryptogramToSolve + ";" + cryptogramPlayerProgress);
+                    if(cryptogramToSolve instanceof LetterCryptogram) {
 
-                            fileWriter.close();
+                        lines.set(lineNumber, "L;" + playerName + ";" + cryptogramToSolve + ";" + cryptogramPlayerProgress);
 
-                        } catch (IOException error) {
+                    } else {
 
-                            System.out.println("[Error] FileWriter caused an error while writing to 'cryptogram.txt");
-                            System.exit(1);
+                        lines.set(lineNumber, "N;" + playerName + ";" + cryptogramToSolve + ";" + cryptogramPlayerProgress);
 
-                        }
-
-                        toCheck =1;
                     }
-                }
-                if(toCheck ==0) {
-                    System.out.println("Username not found, please retry or start a new game");
-                }
-                scanner.close();
 
+                    flag = true;
+                    break;
+
+                }
+
+                lineNumber++;
 
             }
 
+            if(!flag) {
+
+                lines.add(playerName + ";" +cryptogramToSolve + ";" + cryptogramPlayerProgress);
+
+            }
+
+            Files.write(path, lines, StandardCharsets.UTF_8);
 
         } catch (IOException error) {
 
