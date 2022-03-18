@@ -1,11 +1,9 @@
 package src;
-import java.io.File;
 
-import org.junit.jupiter.api.BeforeAll;
+
+import java.io.File;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,8 +15,10 @@ public class SavingLoadingCryptogramTest {
     public Cryptogram testN;
     public String solutionPhraseL;
     public String solutionPhraseN;
-    public String filename  = "cryptogramTest.txt";
+    public String testName = "test";
+    public String filename = "cryptogramTest.txt";
     public File file = new File("cryptogram.txt");
+
     @BeforeEach
     public void setUp() {
         testL = new LetterCryptogram();
@@ -37,28 +37,26 @@ public class SavingLoadingCryptogramTest {
 
     @Test
     public void saveNloadLetterTest() {
-        SavingLoading.saveCryptogram(testL, testL.getPlayingArray(testL.cipheredArray),filename); //saving file
+        SavingLoading.saveCryptogram(testName,testL, testL.getPlayingArray(testL.cipheredArray),filename); //saving file
         Cryptogram test2 = null;
 
         ArrayList<String> playerProgress = new ArrayList<>();//declaring/making tempArraylist
-        SavingLoading.loadCryptogram(test2, playerProgress,filename);// loading saved cryptogram to test2
+        test2= SavingLoading.loadCryptogram(testName, playerProgress,filename);// loading saved cryptogram to test2
 
         assertEquals((test2.toString()),(testL.toString()));
         assertEquals((playerProgress.toString().toString()),((testL.getPlayingArray(testL.cipheredArray)).toString()));
     }
 
-
     @Test
     public void saveNloadNumberTest() {
-        SavingLoading.saveCryptogram(testN, testN.getPlayingArray(testN.cipheredArray),filename); //saving file
+        SavingLoading.saveCryptogram(testName,testN, testN.getPlayingArray(testN.cipheredArray),filename); //saving file
         Cryptogram test2 = null; //declaring new cryptogram
         // Must declare arraylist (cipheredArray) before passing it into load!
         ArrayList<String> playerProgress = new ArrayList<>();//declaring/making tempArraylist
-        SavingLoading.loadCryptogram(test2, playerProgress,filename);// loading saved cryptogram to test2
+        test2= SavingLoading.loadCryptogram(testName, playerProgress,filename);// loading saved cryptogram to test2
 
         assertEquals((test2.toString()),(testN.toString()));
         assertEquals((playerProgress.toString().toString()),((testN.getPlayingArray(testN.cipheredArray)).toString()));
     }
-
 
 }
