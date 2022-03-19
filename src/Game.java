@@ -1,8 +1,6 @@
 package src;
 
 import java.util.*;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.lang.*;
 
 public class Game {
@@ -16,6 +14,7 @@ public class Game {
     public static final String ANSI_CYAN = "\u001B[36m";
 
     public Game() {
+
     }
 
         public void onStartMenu () {
@@ -24,10 +23,7 @@ public class Game {
             System.out.println("Enter your username");
             System.out.println("...................\n");
             name = scUsername.nextLine().toLowerCase();
-            Scanner keyboard = new Scanner(System.in);
-
-
-                currentPlayer.setUsername(name);
+                currentPlayer = SavingLoading.loadOldStats(name);
                 int selection;
                 int exit = 0;
                 while (exit == 0) {
@@ -53,12 +49,20 @@ public class Game {
                                 playNumberCryptogram();
                             }
                             case 3 -> {
-                                SavingLoading.loadCryptogram(name, currentCryptogram, inGameArray, "cryptogram.txt");
+                                inGameArray = new ArrayList<>();
+                                currentCryptogram = SavingLoading.loadCryptogram(name, inGameArray, "cryptogram.txt");
+                                if(currentCryptogram == null) {
+                                    System.out.println("No previously saved game found, please start a new game");
+                                }
+                                else {
+                                    inGameMenu();
+                                }
                             }
                             case 4 -> {
                                 PlayerDetails(currentPlayer);
                             }
                             case 5 -> {
+                                SavingLoading.savePlayer(currentPlayer,"player.txt");
                                 exit = 1;
                                 System.out.println("BYE!");
                             }
@@ -101,8 +105,6 @@ public class Game {
 
             public void PlayerDetails (Player currentPlayer){
 
-                String username = currentPlayer.getUsername();
-
                 System.out.println("Player Details:");
                 System.out.println("...................\n");
                 System.out.println("Username: " + currentPlayer.getUsername());
@@ -112,9 +114,7 @@ public class Game {
                 System.out.println("Number of Crytograms Played: " + currentPlayer.getCryptogramsPlayed());
                 System.out.println("Number of Crytograms Completed: " + currentPlayer.getCryptogramsCompleted());
 
-
             }
-
 
             public void inGameMenu () {
                 int selection = -1;
@@ -138,7 +138,6 @@ public class Game {
                     } catch (Exception e) {
                         System.out.println("Invalid Input.");
                     }
-
                     if (selection > 0 && selection < 5) {
                         switch (selection) {
                             case 1:
@@ -151,7 +150,7 @@ public class Game {
 
                             case 3:
                                 SavingLoading.savePlayer(currentPlayer, "player.txt");
-                                SavingLoading.saveCryptogram(currentPlayer.getUsername(), currentCryptogram, inGameArray, "cryptogram.txt");
+                                SavingLoading.saveCryptogram(currentPlayer.getUsername(),currentCryptogram, inGameArray, "cryptogram.txt");
                                 break;
                             case 4:
                                 exit = 1;
@@ -249,7 +248,7 @@ public class Game {
                                                 } else if ((!inGameArray.contains("_")) && (!checkIfCryptogramSolved(inGameArray, currentCryptogram.phrase))) {
                                                     System.out.println("Your solution is incorrect, you have unsuccessfully finished cryptogram");
                                                     exitCode = 0;
-                                                    onStartMenu();
+                                                    inGameMenu();
                                                     break;
                                                 }
                                                 exitCode = 0;
@@ -331,41 +330,9 @@ public class Game {
                 return inGameArray;
             }
 
-            public void loadOldStats(String name) {
-            Scanner keyboard = new Scanner(System.in);
-            String response = keyboard.next();
-            while (!response.equalsIgnoreCase("y") && !response.equalsIgnoreCase("n")) {
-                System.out.println("\nInvalid response. Try again.");
-                response = keyboard.next();
-            }
-            if (response.equalsIgnoreCase("y")) {
-                try {
-                    Scanner input = new Scanner(new File("player.txt")).useDelimiter(";");
-                    if(Objects.equals(name, input.next())) {
-                        currentPlayer.setAccuracy(input.nextDouble());
-                        currentPlayer.setTotalGuesses(input.nextInt());
-                        currentPlayer.setTotalCorrectGuesses(input.nextInt());
-                        currentPlayer.setCryptogramsPlayed(input.nextInt());
-                        currentPlayer.setCryptogramsCompleted(input.nextInt()); //error
-                        input.close();
-                        currentCryptogram = new LetterCryptogram();
-                        currentCryptogram.cipheredArray = new ArrayList<>();
-                        SavingLoading.loadCryptogram(name, currentCryptogram, inGameArray, "cryptogram.txt"); //need exact type
-                        inGameMenu();
-                    }
-                    else {
-                        System.out.println("This user name is not found start a new game or quit and try again");
-                    }
 
 
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-            }
-
-
-            public void printCipheredArray (ArrayList < String > cipheredArray) {
+    public void printCipheredArray (ArrayList < String > cipheredArray) {
                 for (String each : cipheredArray) {
                     if (Objects.equals(each, "-1")) {
                         System.out.print("  ");
@@ -412,3 +379,4 @@ public class Game {
                 testGame.onStartMenu();
             }
         }
+
