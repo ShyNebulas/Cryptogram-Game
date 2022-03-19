@@ -132,7 +132,8 @@ public class Game {
                     System.out.println("1-Press 1 to Enter and replace with a letter");
                     System.out.println("2-Press 2 to Undo a replaced letter");
                     System.out.println("3-Press 3 to save your progress");
-                    System.out.println("4-Press 4 to go to the previous menu");
+                    System.out.println("4-Press 4 to get hint");
+                    System.out.println("5-Press 5 to go to the previous menu");
                     try {
                         selection = scInGame.nextInt();
                     } catch (Exception e) {
@@ -153,6 +154,10 @@ public class Game {
                                 SavingLoading.saveCryptogram(currentPlayer.getUsername(),currentCryptogram, inGameArray, "cryptogram.txt");
                                 break;
                             case 4:
+                               inGameArray= getHintLetter(inGameArray,currentCryptogram.phrase);
+                               printInGameProgress(inGameArray);
+                                break;
+                            case 5:
                                 exit = 1;
                                 break;
                             default:
@@ -373,6 +378,34 @@ public class Game {
                 String test = String.join(",", inGameArray).replaceAll(",", "").replaceAll("-1", " ");
                 return Objects.equals(test.toUpperCase(), solutionPhrase.toUpperCase());
             }
+
+
+    public ArrayList<String> getHintLetter (ArrayList < String > inGameArray,String solutionPhrase) {
+
+        int exitCode = 1;
+        while (exitCode == 1) {
+            char[] hintarray = solutionPhrase.toCharArray();
+            Random random = new Random();
+            int index = random.nextInt(hintarray.length);
+            char hint=hintarray[index];
+            String hints = Character.toString(hintarray[index]);
+            int hint_limit = 0;
+           {
+                for (int i = 0; i < currentCryptogram.phrase.length(); i++) {
+                    if (Objects.equals(currentCryptogram.phrase.charAt(i), hint)) {
+
+                            inGameArray.set(i, hints.toUpperCase());
+                    }
+                }
+           }
+               exitCode = 0;
+               break;
+        }
+        return inGameArray;
+    }
+
+
+
 
             public static void main (String[]args){
                 Game testGame = new Game();
