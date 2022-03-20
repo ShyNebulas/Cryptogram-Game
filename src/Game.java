@@ -14,7 +14,6 @@ public class Game {
     public static final String ANSI_CYAN = "\u001B[36m";
 
     public Game() {
-
     }
 
         public void onStartMenu () {

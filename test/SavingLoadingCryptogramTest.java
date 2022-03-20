@@ -1,13 +1,23 @@
-package src;
+package test;
 
 
 import java.io.File;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import src.Cryptogram;
+import src.LetterCryptogram;
+import src.NumberCryptogram;
+import src.SavingLoading;
+
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+/** This test fills the txt file and then checks the contents
+ * Because the save function asks for user input if
+ * there is a saved game under that name,
+ * you must clear the cryptogramTest.txt file before and after running these tests**/
 
 public class SavingLoadingCryptogramTest {
 
@@ -15,7 +25,8 @@ public class SavingLoadingCryptogramTest {
     public Cryptogram testN;
     public String solutionPhraseL;
     public String solutionPhraseN;
-    public String testName = "test";
+    public String testNameN = "testN";
+    public String testNameL = "testL";
     public String filename = "cryptogramTest.txt";
     public File file = new File("cryptogram.txt");
 
@@ -37,11 +48,11 @@ public class SavingLoadingCryptogramTest {
 
     @Test
     public void saveNloadLetterTest() {
-        SavingLoading.saveCryptogram(testName,testL, testL.getPlayingArray(testL.cipheredArray),filename); //saving file
+        SavingLoading.saveCryptogram(testNameL,testL, testL.getPlayingArray(testL.cipheredArray),filename); //saving file
         Cryptogram test2 = null;
 
         ArrayList<String> playerProgress = new ArrayList<>();//declaring/making tempArraylist
-        test2= SavingLoading.loadCryptogram(testName, playerProgress,filename);// loading saved cryptogram to test2
+        test2= SavingLoading.loadCryptogram(testNameL, playerProgress,filename);// loading saved cryptogram to test2
 
         assertEquals((test2.toString()),(testL.toString()));
         assertEquals((playerProgress.toString().toString()),((testL.getPlayingArray(testL.cipheredArray)).toString()));
@@ -49,11 +60,11 @@ public class SavingLoadingCryptogramTest {
 
     @Test
     public void saveNloadNumberTest() {
-        SavingLoading.saveCryptogram(testName,testN, testN.getPlayingArray(testN.cipheredArray),filename); //saving file
+        SavingLoading.saveCryptogram(testNameN,testN, testN.getPlayingArray(testN.cipheredArray),filename); //saving file
         Cryptogram test2 = null; //declaring new cryptogram
         // Must declare arraylist (cipheredArray) before passing it into load!
         ArrayList<String> playerProgress = new ArrayList<>();//declaring/making tempArraylist
-        test2= SavingLoading.loadCryptogram(testName, playerProgress,filename);// loading saved cryptogram to test2
+        test2= SavingLoading.loadCryptogram(testNameN, playerProgress,filename);// loading saved cryptogram to test2
 
         assertEquals((test2.toString()),(testN.toString()));
         assertEquals((playerProgress.toString().toString()),((testN.getPlayingArray(testN.cipheredArray)).toString()));

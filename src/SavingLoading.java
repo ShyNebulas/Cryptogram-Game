@@ -19,7 +19,7 @@ public class SavingLoading {
     cryptogramToSolve = Jumbled-up solution/cryptogram problem
     cryptogramPlayerProgress = Editable cryptogramToSolve, to match our solution phrase
      */
-    static Cryptogram loadCryptogram(String playerName,  ArrayList<String> cryptogramPlayerProgress, String filename) {
+    public static Cryptogram loadCryptogram(String playerName,  ArrayList<String> cryptogramPlayerProgress, String filename) {
         Cryptogram cryptogramToSolve;
         Scanner scanner = null;
 
@@ -39,6 +39,10 @@ public class SavingLoading {
         while(scanner.hasNextLine()) {
 
             String[] splitLine = scanner.nextLine().split(";");
+
+            if(splitLine.length !=5) {
+                System.out.println("File is corrupt cannot read saved game");
+            }
 
             if(splitLine[1].equals(playerName)) {
 
@@ -91,7 +95,7 @@ public class SavingLoading {
     cryptogramToSolve = Jumbled-up solution/cryptogram problem
     cryptogramPlayerProgress = Editable cryptogramToSolve, to match our solution phrase
      */
-    static void saveCryptogram(String playerName, Cryptogram cryptogramToSolve, ArrayList<String> cryptogramPlayerProgress, String filename) {
+    public static void saveCryptogram(String playerName, Cryptogram cryptogramToSolve, ArrayList<String> cryptogramPlayerProgress, String filename) {
 
         try {
 
@@ -149,7 +153,7 @@ public class SavingLoading {
 
     }
 
-    static void savePlayer(Player player,String filename) {
+    public static void savePlayer(Player player,String filename) {
 
         try {
 
@@ -206,14 +210,20 @@ public class SavingLoading {
             int flag=0;
             for (int i=0; i<lines.size();i++) {
                 String[] line = lines.get(i).split(";");
-                if (Objects.equals(line[0], name)) {
-                    player.setAccuracy(Double.parseDouble(line[1]));
-                    player.setTotalGuesses(Integer.parseInt(line[2]));
-                    player.setTotalCorrectGuesses(Integer.parseInt(line[3]));
-                    player.setCryptogramsPlayed(Integer.parseInt(line[4]));
-                    player.setCryptogramsCompleted(Integer.parseInt(line[5]));
-                    flag = 1;
-                    input.close();
+                if(line.length != 6 && !lines.isEmpty()) {
+                    System.out.println("File corrupt, cannot read stats.");
+                }
+                else {
+                    if (Objects.equals(line[0], name)) {
+                        player.setUsername(name);
+                        player.setAccuracy(Double.parseDouble(line[1]));
+                        player.setTotalGuesses(Integer.parseInt(line[2]));
+                        player.setTotalCorrectGuesses(Integer.parseInt(line[3]));
+                        player.setCryptogramsPlayed(Integer.parseInt(line[4]));
+                        player.setCryptogramsCompleted(Integer.parseInt(line[5]));
+                        flag = 1;
+                        input.close();
+                    }
                 }
             }
             if(flag ==0) {
