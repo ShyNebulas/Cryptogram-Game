@@ -51,3 +51,5 @@ public abstract class Cryptogram {
     public abstract ArrayList<String> getPlayingArray (ArrayList<String> cipheredArray);
     public abstract ArrayList<String>  generateCipheredArray (String phraseToCipher);
 }
+
+

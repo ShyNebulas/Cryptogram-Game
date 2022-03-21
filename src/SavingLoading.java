@@ -181,6 +181,9 @@ public class SavingLoading {
 
                 if (lineSplit[0].equals(player.getUsername())) {
                     lines.set(lineNumber, player.toString() +"\n");
+                    FileWriter fileWriter = new FileWriter(filename);
+                    fileWriter.write(String.join("\n", lines));
+                    fileWriter.close();
                     flag = true;
                     break;
 

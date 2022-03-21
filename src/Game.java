@@ -192,8 +192,9 @@ public class Game {
                                                     checkIfGuessCorrect(replacement, inGameArray, currentCryptogram.phrase);
                                                     currentPlayer.updateAccuracy();
                                                     if (checkIfCryptogramSolved(inGameArray, currentCryptogram.phrase)) {
-                                                        System.out.println("You have finished this cryptogram successfully Congratulations!");
                                                         currentPlayer.incrementCryptogramsCompleted();
+                                                        SavingLoading.savePlayer(currentPlayer,"player.txt");
+                                                        System.out.println("You have finished this cryptogram successfully Congratulations!");
                                                         exitCode = 0;
                                                         onStartMenu();
                                                         break;
@@ -240,6 +241,7 @@ public class Game {
                                                 currentPlayer.updateAccuracy();
                                                 if (checkIfCryptogramSolved(inGameArray, currentCryptogram.phrase)) {
                                                     currentPlayer.incrementCryptogramsCompleted();
+                                                    SavingLoading.savePlayer(currentPlayer,"player.txt");
                                                     System.out.println("You have finished this cryptogram successfully Congratulations!");
                                                     exitCode = 0;
                                                     onStartMenu();
@@ -276,10 +278,6 @@ public class Game {
                     if (Objects.equals(currentCryptogram.cipheredArray.get(i), toReplace.toUpperCase())) {
                         inGameArray.set(i, replacement.toUpperCase());
                     }
-                }
-                checkIfGuessCorrect(replacement, inGameArray, currentCryptogram.phrase);
-                if (checkIfCryptogramSolved(inGameArray, currentCryptogram.phrase)) {
-                    currentPlayer.incrementCryptogramsCompleted();
                 }
                 return inGameArray;
             }
@@ -357,8 +355,9 @@ public class Game {
             solutionPhrase){
                 boolean checkBool = false;
                 for (int i = 0; i < inGameArray.size(); i++) {
-                    if (Objects.equals(inGameArray.get(i), replacement)) {
-                        checkBool = Objects.equals(inGameArray.get(i), Character.toString(solutionPhrase.charAt(i)));
+                    if (Objects.equals(inGameArray.get(i).toUpperCase(), replacement.toUpperCase())) {
+                        checkBool = Objects.equals(inGameArray.get(i).toUpperCase(), Character.toString(solutionPhrase.charAt(i)).toUpperCase());
+                        break;
                     }
                 }
                 if (checkBool) {
