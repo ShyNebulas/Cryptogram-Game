@@ -110,7 +110,9 @@ public class Player {
 
     }
 
-    public static void leaderboards(String filename) {
+    public static ArrayList<String> leaderboards(String filename) {
+
+        ArrayList<String> top10 = new ArrayList<>();
 
         Scanner scanner = null;
 
@@ -121,14 +123,14 @@ public class Player {
             if(!scanner.hasNextLine()) {
 
                 System.out.println("No players have been stored yet!");
-                return;
+                return null;
 
             }
 
         } catch(FileNotFoundException error) {
 
             System.out.println("[Error]" + "'" + filename + "'" + "file not found");
-            return;
+            return null;
 
         }
 
@@ -147,16 +149,22 @@ public class Player {
         int counter = 1;
 
         for(Map.Entry<String, Integer> element: test.entrySet()) {
+        if(counter <= 10) {
+            if (element.getValue() > 1) {
 
-            if(element.getValue() > 1) {
+                top10.add(counter + ". " + element.getKey() + " | " + element.getValue());
 
-                System.out.println(counter + ". " + element.getKey() + " | " + element.getValue());
-
+                counter++;
             }
-
-            counter++;
+        }
 
         }
+
+        while(counter <= 10){
+            top10.add(counter + ". ...");
+            counter++;
+        }
+        return top10;
 
     }
 

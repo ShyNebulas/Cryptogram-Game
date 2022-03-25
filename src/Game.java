@@ -62,7 +62,12 @@ public class Game {
                                 PlayerDetails(currentPlayer);
                             }
                             case 5 -> {
-                               Player.leaderboards("player.txt");
+                               ArrayList<String> top10 = Player.leaderboards("player.txt");
+                               if(top10 != null) {
+                                   for (String position : top10) {
+                                       System.out.println(position);
+                                   }
+                               }
                             }
                             case 6 -> {
                                 SavingLoading.savePlayer(currentPlayer,"player.txt");
