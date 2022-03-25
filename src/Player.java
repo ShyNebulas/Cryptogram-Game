@@ -1,5 +1,9 @@
 package src;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
+
 public class Player {
 
     private String username;
@@ -79,6 +83,81 @@ public class Player {
     @Override
     public String toString() {
         return this.username + ";" + this.accuracy + ";" + this.totalGuesses + ";" + this.totalCorrectGuesses + ";" + this.cryptogramsPlayed + ";" + this.cryptogramsCompleted;
+    }
+
+    public static HashMap<String, Integer> sort(HashMap<String, Integer> hashmap) {
+
+        List<Map.Entry<String, Integer>> mapList = new LinkedList<Map.Entry<String, Integer>>(hashmap.entrySet());
+
+        Collections.sort(mapList, new Comparator<Map.Entry<String, Integer>>() {
+
+            public int compare(Map.Entry<String, Integer> object1, Map.Entry<String, Integer> object2) {
+
+                return object2.getValue().compareTo(object1.getValue());
+
+            }
+
+        });
+
+        HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
+        for(Map.Entry<String, Integer> element: mapList) {
+
+            temp.put(element.getKey(), element.getValue());
+
+        }
+
+        return temp;
+
+    }
+
+    public static void leaderboards(String filename) {
+
+        Scanner scanner = null;
+
+        try {
+
+            scanner = new Scanner(new File(filename));
+
+            if(!scanner.hasNextLine()) {
+
+                System.out.println("No players have been stored yet!");
+                return;
+
+            }
+
+        } catch(FileNotFoundException error) {
+
+            System.out.println("[Error]" + "'" + filename + "'" + "file not found");
+            return;
+
+        }
+
+        HashMap<String, Integer> players = new HashMap<String, Integer>();
+
+        while(scanner.hasNextLine()) {
+
+            String[] splitLine = scanner.nextLine().split(";");
+
+            players.put(splitLine[0], Integer.valueOf(splitLine[5]));
+
+        }
+
+        HashMap<String, Integer> test = sort(players);
+
+        int counter = 1;
+
+        for(Map.Entry<String, Integer> element: test.entrySet()) {
+
+            if(element.getValue() > 1) {
+
+                System.out.println(counter + ". " + element.getKey() + " | " + element.getValue());
+
+            }
+
+            counter++;
+
+        }
+
     }
 
 }

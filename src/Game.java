@@ -33,11 +33,12 @@ public class Game {
                     System.out.println("2-Press 2 to play Number Cryptogram");
                     System.out.println("3-Press 3 Load a saved cryptogram");
                     System.out.println("4-Press 4 to view your details");
-                    System.out.println("5-Press 5 to Quit");
+                    System.out.println("5-Press 5 to view the leaderboards");
+                    System.out.println("6-Press 6 to Quit");
 
                     selection = scCryptType.nextInt();
 
-                    if (selection <= 5 && selection > 0) {
+                    if (selection <= 6 && selection > 0) {
                         switch (selection) {
                             case 1 -> {
                                 currentPlayer.incrementCryptogramsPlayed();
@@ -61,6 +62,9 @@ public class Game {
                                 PlayerDetails(currentPlayer);
                             }
                             case 5 -> {
+                               Player.leaderboards("player.txt");
+                            }
+                            case 6 -> {
                                 SavingLoading.savePlayer(currentPlayer,"player.txt");
                                 exit = 1;
                                 System.out.println("BYE!");

@@ -153,6 +153,48 @@ public class SavingLoading {
 
     }
 
+
+
+    public static void updatePlayer(Player player, List<String> lines) {
+
+        int lineNumber = 0;
+
+        for(String line : lines) {
+
+            String[] lineSplit = line.split(";");
+
+            if (lineSplit[0].equals(player.getUsername())) {
+
+                lines.set(lineNumber, player.toString());
+                break;
+
+            }
+
+            lineNumber++;
+
+        }
+
+    }
+
+    public static boolean checkForNewPlayer(Player player, List<String> lines) {
+
+        for(String line: lines) {
+
+            String[] lineSplit = line.split(";");
+
+            if(lineSplit[0].equals(player.getUsername())) {
+
+                return false;
+
+            }
+
+        }
+
+        return true;
+
+    }
+
+
     public static void savePlayer(Player player,String filename) {
 
         try {
@@ -170,36 +212,68 @@ public class SavingLoading {
         }
 
         try {
+
             Path path = Paths.get(filename);
-            List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 
-            int lineNumber = 0;
-            boolean flag = false;
-            for(String line: lines) {
+            List<String> lines = null;
 
-                String[] lineSplit = line.split(";");
+            try {
 
-                if (lineSplit[0].equals(player.getUsername())) {
-                    lines.set(lineNumber, player.toString() +"\n");
-                    FileWriter fileWriter = new FileWriter(filename);
-                    fileWriter.write(String.join("\n", lines));
-                    fileWriter.close();
-                    flag = true;
-                    break;
+                lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+
+            } catch(IOException error) {
+
+                System.out.print("[Error] Cannot read from '" + filename + "'");
+                System.exit(1);
+
+            }
+
+            try {
+
+                FileWriter writer = new FileWriter(filename);
+
+                switch (lines.size()) {
+
+                    case 0:
+
+                        writer.write(player.toString());
+                        break;
+
+                    default:
+
+                        updatePlayer(player, lines);
+
+                        for(String line: lines) {
+
+                            writer.write(line + '\n');
+
+                        }
+
+                        if(checkForNewPlayer(player, lines)) {
+
+                            writer.write(player.toString());
+
+                        }
+
+                        break;
 
                 }
-                lineNumber++;
+
+                writer.flush();
+                writer.close();
+
+            } catch(IOException error) {
+
+                System.exit(1);
+
             }
-            if (!flag) {
-                FileWriter fileWriter = new FileWriter(filename, true);
-                fileWriter.write(player.toString() + "\n");
-                fileWriter.close();
-            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
         }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+
+    }
 
     public static Player loadOldStats(String name) {
         Player player = new Player(name,0,0,0,0,0);
