@@ -7,6 +7,7 @@ public class Game {
     Player currentPlayer = new Player("", 0.0, 0, 0, 0, 0);
     static Cryptogram currentCryptogram;
     static ArrayList<String> inGameArray = new ArrayList<>();
+    static ArrayList<String > usedHints = new ArrayList<>();
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_BLUE = "\u001B[34m";
@@ -131,7 +132,8 @@ public class Game {
                     System.out.println("1-Press 1 to Enter and replace with a letter");
                     System.out.println("2-Press 2 to Undo a replaced letter");
                     System.out.println("3-Press 3 to save your progress");
-                    System.out.println("4-Press 4 to go to the previous menu");
+                    System.out.println("4-Press 4 to get hint");
+                    System.out.println("5-Press 6 to go to the previous menu");
                     try {
                         selection = scInGame.nextInt();
                     } catch (Exception e) {
@@ -152,6 +154,12 @@ public class Game {
                                 SavingLoading.saveCryptogram(currentPlayer.getUsername(),currentCryptogram, inGameArray, "cryptogram.txt");
                                 break;
                             case 4:
+                                inGameArray= getHintLetter(inGameArray,currentCryptogram.phrase);
+                                printInGameProgress(inGameArray);
+                                System.out.println("\n");
+                                break;
+
+                            case 5:
                                 exit = 1;
                                 break;
                             default:
@@ -372,9 +380,90 @@ public class Game {
                 return Objects.equals(test.toUpperCase(), solutionPhrase.toUpperCase());
             }
 
-            public static void main (String[]args){
+
+
+    public ArrayList<String> getHintLetter (ArrayList < String > inGameArray,String solutionPhrase) {
+
+        int exitCode = 1;
+        while (exitCode == 1) {
+            char[] hintarray = solutionPhrase.toCharArray();
+            String hints;
+            char hint;
+            do {
+                Random random = new Random();
+                int index = random.nextInt(hintarray.length);
+                hint = hintarray[index];
+                hints = Character.toString(hintarray[index]);
+                if(!usedHints.contains(hints) ) break;
+            }while(true); //generate random hints once
+
+            for (int i = 0; i < currentCryptogram.phrase.length(); i++) {
+
+                    if (inGameArray.contains(hints.toUpperCase())) {
+
+                            if (!Objects.equals(inGameArray.get(i), "_")) //checking if ingamearray [i] is mapped
+                            {
+                                if (Objects.equals(inGameArray.get(i), hints.toUpperCase()))
+                                {
+                                        if (Objects.equals(currentCryptogram.phrase.charAt(i), hint)) {
+                                            inGameArray.set(i, hints.toUpperCase());
+                                            usedHints.add(hints);
+                                            currentPlayer.incrementTotalGuesses();
+                                            currentPlayer.updateAccuracy();
+                                        }
+                                        else
+                                        {
+                                            inGameArray.set(i, "_");
+                                            System.out.print(ANSI_YELLOW + "This Hint " + hints.toUpperCase() + "  was used in Cryptogram,now it is at it right place \n" + ANSI_RESET);
+                                            usedHints.add(inGameArray.get(i));
+                                        }
+                                }
+                            }
+                    }
+                    if (Objects.equals(currentCryptogram.phrase.charAt(i), hint)) {
+                        inGameArray.set(i, hints.toUpperCase());
+                        usedHints.add(hints);
+                        currentPlayer.incrementTotalGuesses();
+                        currentPlayer.updateAccuracy();
+                    }
+                if (checkIfCryptogramSolved(inGameArray, currentCryptogram.phrase)) {
+                    currentPlayer.incrementCryptogramsCompleted();
+                    SavingLoading.savePlayer(currentPlayer, "player.txt");
+                    System.out.println("You have finished this cryptogram successfully Congratulations!\n");
+                    System.out.println(solutionPhrase+"\n");
+                    usedHints.clear();
+                    onStartMenu();
+                }
+            }
+                 exitCode = 0;
+                 break;
+        }
+        return inGameArray;
+    }
+
+
+    public static void main (String[]args){
                 Game testGame = new Game();
                 testGame.onStartMenu();
             }
         }
+
+
+//    Live Laugh Love :)
+//        I am looking right at the other half of me
+//        I am just a man not a hero
+//        Let us love like there are no goodbyes
+//        Every little thing gonna be alright
+//        You are Beautiful no matter what they say
+//        It is a beautiful day Dont let it get away
+//        love for all hatred for none
+//        change the world by being yourself
+//        Change the world by being yourself
+//        Every moment is a fresh beginning
+//        Never regret anything that made you smile
+//        Everything you can imagine is real
+//        Whatever you do do it well
+//        Simplicity is the ultimate sophistication
+//        Die with memories not dreams
+//        What we think we become
 
