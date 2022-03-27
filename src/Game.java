@@ -7,6 +7,7 @@ public class Game {
     Player currentPlayer = new Player("", 0.0, 0, 0, 0, 0);
     static Cryptogram currentCryptogram;
     static ArrayList<String> inGameArray = new ArrayList<>();
+    static ArrayList<String > usedHints = new ArrayList<>();
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_BLUE = "\u001B[34m";
@@ -15,7 +16,7 @@ public class Game {
 
     public Game() {
     }
-
+    public int selection;
         public void onStartMenu () {
             String name;
             Scanner scUsername = new Scanner(System.in);
@@ -139,28 +140,39 @@ public class Game {
                     System.out.println("...................\n");
                     System.out.println("1-Press 1 to Enter and replace with a letter");
                     System.out.println("2-Press 2 to Undo a replaced letter");
-                    System.out.println("3-Press 3 to save your progress");
-                    System.out.println("4-Press 4 to go to the previous menu");
+                    System.out.println("3-Press 3 to get a hint" );
+                    System.out.println("4-Press 4 to show frequencies");
+                    System.out.println("5-Press 5 to save your progress");
+                    System.out.println("6-Press 6 to finish this game and show the solution");
+                    System.out.println("7-Press 7 to go to the previous menu");
                     try {
                         selection = scInGame.nextInt();
                     } catch (Exception e) {
                         System.out.println("Invalid Input.");
                     }
-                    if (selection > 0 && selection < 5) {
+                    if (selection > 0 && selection < 7) {
                         switch (selection) {
                             case 1:
                                 getInputForEnterLetter();
                                 break;
-
                             case 2:
                                 getInputForUndoLetter();
                                 break;
-
                             case 3:
+                                getHintLetter(inGameArray,currentCryptogram.phrase);
+                                break;
+                            case 4:
+                                LetterNumberFrequency();
+                                break;
+                            case 5:
                                 SavingLoading.savePlayer(currentPlayer, "player.txt");
                                 SavingLoading.saveCryptogram(currentPlayer.getUsername(),currentCryptogram, inGameArray, "cryptogram.txt");
                                 break;
-                            case 4:
+                            case 6:
+                                System.out.println(currentCryptogram.phrase);
+                                exit = 1;
+                                break;
+                            case 7:
                                 exit = 1;
                                 break;
                             default:
@@ -381,7 +393,92 @@ public class Game {
                 return Objects.equals(test.toUpperCase(), solutionPhrase.toUpperCase());
             }
 
-            public static void main (String[]args){
+    public ArrayList<String> getHintLetter (ArrayList < String > inGameArray,String solutionPhrase) {
+
+        int exitCode = 1;
+        while (exitCode == 1) {
+            char[] hintarray = solutionPhrase.toCharArray();
+            String hints;
+            char hint;
+            do {
+                Random random = new Random();
+                int index = random.nextInt(hintarray.length);
+                hint = hintarray[index];
+                hints = Character.toString(hintarray[index]);
+                if(!usedHints.contains(hints) ) break;
+            }while(true); //generate random hints once
+
+            for (int i = 0; i < currentCryptogram.phrase.length(); i++) {
+
+                if (inGameArray.contains(hints.toUpperCase())) {
+
+                    if (!Objects.equals(inGameArray.get(i), "_")) //checking if ingamearray [i] is mapped
+                    {
+                        if (Objects.equals(inGameArray.get(i), hints.toUpperCase()))
+                        {
+                            if (Objects.equals(currentCryptogram.phrase.charAt(i), hint)) {
+                                inGameArray.set(i, hints.toUpperCase());
+                                usedHints.add(hints);
+                                currentPlayer.incrementTotalGuesses();
+                                currentPlayer.updateAccuracy();
+                            }
+                            else
+                            {
+                                inGameArray.set(i, "_");
+                                System.out.print(ANSI_YELLOW + "This Hint " + hints.toUpperCase() + "  was used in Cryptogram,now it is at it right place \n" + ANSI_RESET);
+                                usedHints.add(inGameArray.get(i));
+                            }
+                        }
+                    }
+                }
+                if (Objects.equals(currentCryptogram.phrase.charAt(i), hint)) {
+                    inGameArray.set(i, hints.toUpperCase());
+                    usedHints.add(hints);
+                    currentPlayer.incrementTotalGuesses();
+                    currentPlayer.updateAccuracy();
+                }
+                if (checkIfCryptogramSolved(inGameArray, currentCryptogram.phrase)) {
+                    currentPlayer.incrementCryptogramsCompleted();
+                    SavingLoading.savePlayer(currentPlayer, "player.txt");
+                    System.out.println("You have finished this cryptogram successfully Congratulations!\n");
+                    System.out.println(ANSI_RED+solutionPhrase+"\n"+ ANSI_RESET);
+                    usedHints.clear();
+                    onStartMenu();
+                }
+            }
+            exitCode = 0;
+            break;
+        }
+        return inGameArray;
+    }
+
+    public void LetterNumberFrequency() {
+        String listString = String.join("",currentCryptogram.phrase).toUpperCase();
+        String str = listString;
+        int[] freq = new int[listString.length()];
+        char[] str1 = listString.toCharArray();
+        for(int i=0; i<listString.length(); i++) {
+            freq[i]=1;
+            for(int j=i+1;j<listString.length();j++) {
+                if(str1[i]==str1[j]) {
+                    freq[i]++;
+                    str1[j]= '0';
+                }
+            }
+        }
+
+        System.out.println("Frequencies of the characters in the string are as below: ");
+        System.out.println("Characters  frequencies");
+        for(int i=0; i<freq.length;i++) {
+            if(str1[i] != ' ' && str1[i] !='0') {
+                System.out.println(str1[i] + "              " + freq[i]);
+            }
+        }
+    }
+
+
+
+    public static void main (String[]args){
                 Game testGame = new Game();
                 testGame.onStartMenu();
             }
